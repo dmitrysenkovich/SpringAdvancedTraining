@@ -1,0 +1,160 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.epam.spring.core</groupId>
+  <artifactId>managing-movie-theater-app</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>managing-movie-theater-app Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+
+  
+  <build>
+      <finalName>managing-movie-theater-app</finalName>
+  
+        <plugins>
+        <plugin>
+    			<artifactId>maven-resources-plugin</artifactId>
+    				<executions>
+        				<execution>
+            				<id>copy-spring-configurations</id>
+           					<phase>process-resources</phase>
+            					<goals>
+                 					<goal>copy-resources</goal>
+           						 </goals>
+            						<configuration>
+                						<overwrite>true</overwrite>
+                							<outputDirectory>${basedir}/target/classes/conf</outputDirectory>
+                								<resources>
+                    								<resource>
+                        								<directory>src/main/conf</directory>
+                    								</resource>
+                								</resources>
+            						</configuration>
+        				</execution>
+    				</executions>
+			</plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <compilerVersion>1.8</compilerVersion>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <fork>true</fork>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <configuration>
+                    <lineLength>120</lineLength>
+                    <includePom>true</includePom>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>findbugs-maven-plugin</artifactId>
+                <version>3.0.3</version>
+            </plugin>
+            
+			<!-- embedded Jetty server, for testing -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.3.v20140905</version>
+				<configuration>
+				<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/</contextPath>
+					</webApp>
+				</configuration>
+			</plugin>
+        </plugins>
+    </build>
+  
+  <properties>
+			<spring.version>3.0.5.RELEASE</spring.version>
+   			<jackson.version>2.5.5</jackson.version>
+   			<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>   
+   			<aspectj.version>1.8.9</aspectj.version>
+			<allure.version>1.4.20</allure.version>			
+    </properties>  
+
+	<dependencies>
+		<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+	   	<dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		
+		<!-- Jackson JSON Mapper -->  
+  		<dependency>
+    		<groupId>com.fasterxml.jackson.core</groupId>
+   			<artifactId>jackson-databind</artifactId>
+    		<version>${jackson.version}</version>
+  		</dependency>
+		<dependency>
+ 			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+  			<version>2.9.3</version>
+  		</dependency>
+  		
+  		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+    		<groupId>com.google.code.findbugs</groupId>
+    		<artifactId>jsr305</artifactId>
+   			 <version>3.0.1</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>joda-time</groupId>
+    		<artifactId>joda-time</artifactId>
+    		<version>2.9.7</version>
+		</dependency>
+		
+	</dependencies>
+		
+</project>
