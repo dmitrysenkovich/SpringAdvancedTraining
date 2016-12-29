@@ -10,6 +10,7 @@
                 http://www.springframework.org/schema/context/spring-context.xsd">
 
 	<bean id="discountServiceImpl" class="com.epam.spring.core.service.impl.DiscountServiceImpl">
+		<property name="userService" ref="userServiceImpl"></property>
 		<property name="discounts">
 			<list>
 				<bean id="birthdayDiscount" class="com.epam.spring.core.service.discount.DiscountStrategy" factory-method="getDiscount">

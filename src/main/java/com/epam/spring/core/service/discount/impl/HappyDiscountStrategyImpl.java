@@ -8,10 +8,17 @@ import com.epam.spring.core.service.discount.IDiscount;
 
 public class HappyDiscountStrategyImpl implements IDiscount {
 
+	private static final double HAPPY_DISCOUNT = 0.50;
+	private static final int EACH_TH_TICKET = 10; 
+
 	@Override
 	public double getDiscount(User user, Event event, LocalDateTime airDateTime, long numberOfTickets) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (user.isRegistered()) {
+			return numberOfTickets == EACH_TH_TICKET ? HAPPY_DISCOUNT : 0;
+		} else {
+			int numberOfUserTickets = (int) (user.getTickets().size() + numberOfTickets);
+			return numberOfUserTickets % EACH_TH_TICKET == 0 ? HAPPY_DISCOUNT : 0;
+		}
 	}
 
 }

@@ -3,10 +3,8 @@ package com.epam.spring.core.domain;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-
-
 /**
- * @author Yuriy_Tkach
+ * @author alehstruneuski
  */
 public class Ticket extends DomainObject implements Comparable<Ticket> {
 

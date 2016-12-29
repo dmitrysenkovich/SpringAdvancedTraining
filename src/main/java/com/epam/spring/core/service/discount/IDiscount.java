@@ -1,7 +1,6 @@
 package com.epam.spring.core.service.discount;
 
 import java.time.LocalDateTime;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 

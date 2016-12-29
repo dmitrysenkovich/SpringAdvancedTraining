@@ -2,21 +2,36 @@ package com.epam.spring.core.domain;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.NavigableSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
 /**
- * @author Yuriy_Tkach
+ * @author alehstruneuski
  */
 public class Auditorium {
 
     private String name;
     private long numberOfSeats;
+	private NavigableSet<Ticket> tickets = new TreeSet<>();
     private Set<Long> vipSeats = Collections.emptySet();
 
     public Auditorium() {
+    }
+    
+    public void addTicket(Ticket ticket) {
+    	tickets.add(ticket);
+    }
+    
+    public void remove(Ticket ticket) {
+    	tickets.remove(ticket);
+    }
+    
+    public NavigableSet<Ticket> getTickets() {
+    	return tickets;
     }
 
     /**
@@ -28,6 +43,15 @@ public class Auditorium {
      */
     public long countVipSeats(Collection<Long> seats) {
         return seats.stream().filter(seat -> vipSeats.contains(seat)).count();
+    }
+    
+    /**
+     * Checks whether passed id of seat is VIP
+     * @param id - id of seat
+     * @return whether id is VIP seat or not
+     */
+    public boolean isSeatVip(Long id) {
+    	return vipSeats.contains(id);
     }
 
     public String getName() {
