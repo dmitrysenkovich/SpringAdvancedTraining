@@ -26,8 +26,7 @@ public class EventServiceDaoImpl implements IEventServiceDao {
 
 	@Override
 	public Event getById(Long id) {
-		// TODO Auto-generated method stub
-		return events.remove(id);
+		return events.get(id);
 	}
 
 	@Override

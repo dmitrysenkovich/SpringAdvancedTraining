@@ -20,10 +20,6 @@ public class AuditoriumServiceImpl implements IAuditoriumService {
 		return auditoriums.get(name);
 	}
 	
-	public Map<String, Auditorium> getAuditoriums() {
-		return auditoriums;
-	}
-	
 	public void setAuditoriums(Map<String, Auditorium> auditoriums) {
 		this.auditoriums = auditoriums;
 	}

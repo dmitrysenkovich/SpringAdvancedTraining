@@ -1,7 +1,7 @@
 package com.epam.spring.core.domain;
 
 /**
- * @author Yuriy_Tkach
+ * @author alehstruneuski
  */
 public class DomainObject {
 

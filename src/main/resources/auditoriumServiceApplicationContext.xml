@@ -13,7 +13,7 @@
 		<property name="auditoriums">	
 			<map>
 				<entry key="${auditorium.first.name}" value-ref="auditorium_first_stage" />
-				<entry key="${auditorium.second.name}" value-ref="auditorium_first_stage" />
+				<entry key="${auditorium.second.name}" value-ref="auditorium_second_stage" />
 			</map>
 		</property>
 	</bean>

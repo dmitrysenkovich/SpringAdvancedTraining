@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.epam.spring.core.constants.TestConstants;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.IUserService;
 
@@ -31,7 +32,7 @@ public class UserServiceTest extends AbstractTestNGSpringContextTests {
 		expectedUser.setEmail(TEST_USER_EMAIL);
 	}
 	
-	@Test(description = "save() and getById()")
+	@Test(groups = TestConstants.GROUP_USER_SAVE, description = "save() and getById()")
 	public void userServiceSaveTest(){
 		userService.save(expectedUser);		
 

@@ -17,8 +17,8 @@ public class BirthdayDiscountImpl implements IDiscount {
 	public double getDiscount(User user, Event event, LocalDateTime airDateTime, long numberOfTickets) {
 		LocalDate dateAirDate= new LocalDate(0, airDateTime.getMonthValue(), airDateTime.getDayOfMonth());		
 		LocalDate dateBirthdayUser = new LocalDate(0, user.getBirthday().getMonthValue(), user.getBirthday().getDayOfMonth());
-		int diffDays = Days.daysBetween(dateAirDate ,dateBirthdayUser).getDays();
-		return (diffDays >= 0 && 5 <= diffDays) ? BIRTHDAY_DISCOUNT : 0;
+		int diffDays = Days.daysBetween(dateAirDate, dateBirthdayUser).getDays();
+		return (0 >= diffDays && diffDays <= 5) ? BIRTHDAY_DISCOUNT : 0;
 	}
 
 }

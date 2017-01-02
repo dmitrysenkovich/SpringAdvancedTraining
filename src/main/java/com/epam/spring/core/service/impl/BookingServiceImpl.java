@@ -37,7 +37,9 @@ public class BookingServiceImpl implements IBookingService {
 
 		double totalPrice = 0;
 		for (Long id : seats) {
-			Auditorium auditorium = eventService.getById(event.getId()).getAuditoriums().get(dateTime);
+			Long eventId = event.getId();
+			Event eventById = eventService.getById(eventId);
+			Auditorium	auditorium = eventById.getAuditoriums().get(dateTime);
 			boolean isSeatVip = auditoriumService.getByName(auditorium.getName()).isSeatVip(id);	
 			if (isSeatVip) {
 				totalPrice += basePrice * RATE_VIP_SEAT;
@@ -51,13 +53,16 @@ public class BookingServiceImpl implements IBookingService {
 	@Override
 	public void bookTickets(Set<Ticket> tickets) {		
 		for (Ticket ticket : tickets) {
-			Event event = eventService.getById(ticket.getEvent().getId());
+			Long eventId = ticket.getEvent().getId();
+			Event event = eventService.getById(eventId);
 			event.getAuditoriums().get(ticket.getDateTime()).addTicket(ticket);
 			
-			User userTicket = ticket.getUser();
-			if (userService.getById(userTicket.getId()) != null) {
-				userTicket.getTickets().add(ticket);
-				userService.save(userTicket);
+			User userOfTicket = ticket.getUser();
+			Long userId = userOfTicket.getId();
+			
+			if (userService.getById(userId) != null) {
+				userOfTicket.getTickets().add(ticket);
+				userService.save(userOfTicket);
 			}
 		}		
 	}
@@ -68,6 +73,22 @@ public class BookingServiceImpl implements IBookingService {
 		NavigableMap<LocalDateTime, Auditorium> auditoriums = choosenEvent.getAuditoriums();
 		Auditorium auditorium = auditoriums.get(dateTime);
 		return auditorium.getTickets();
+	}
+	
+	public void setDiscountService(IDiscountService discountService) {
+		this.discountService = discountService;
+	}
+
+	public void setAuditoriumService(IAuditoriumService auditoriumService) {
+		this.auditoriumService = auditoriumService;
+	}
+
+	public void setEventService(IEventService eventService) {
+		this.eventService = eventService;
+	}
+
+	public void setUserService(IUserService userService) {
+		this.userService = userService;
 	}
 	
 }

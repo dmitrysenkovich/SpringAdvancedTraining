@@ -17,7 +17,7 @@
 				    <constructor-arg ref="birthdayDiscountImpl"/>
 				</bean>		
 				<bean id="happyDiscount" class="com.epam.spring.core.service.discount.DiscountStrategy" factory-method="getDiscount">
-					<constructor-arg ref="happyDiscountStrategyImpl"/>
+					<constructor-arg ref="luckyDiscountStrategyImpl"/>
 				</bean> 				
 			</list>
 		</property>
@@ -26,7 +26,7 @@
 	<bean name="birthdayDiscountImpl" class="com.epam.spring.core.service.discount.impl.BirthdayDiscountImpl">
 	</bean>
 	
-	<bean name="happyDiscountStrategyImpl" class="com.epam.spring.core.service.discount.impl.HappyDiscountStrategyImpl">
+	<bean name="luckyDiscountStrategyImpl" class="com.epam.spring.core.service.discount.impl.LuckyDiscountStrategyImpl">
 	</bean>
   	
 </beans>

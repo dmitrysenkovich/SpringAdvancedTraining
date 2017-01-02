@@ -13,5 +13,6 @@
     <import resource="eventServiceApplicationContext.xml"/>
     <import resource="auditoriumServiceApplicationContext.xml"/>
     <import resource="discountServiceApplicationContext.xml"/>
+    <import resource="bookingServiceApplicationContext.xml"/>
  	
 </beans>

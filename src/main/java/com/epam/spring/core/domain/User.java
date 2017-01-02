@@ -10,7 +10,6 @@ import java.util.TreeSet;
  */
 public class User extends DomainObject {
 
-	private Long id;
 	private String firstName;
 	private String lastName;
     private String email;
@@ -18,13 +17,6 @@ public class User extends DomainObject {
 	private LocalDateTime birthday;
 	private NavigableSet<Ticket> tickets = new TreeSet<>();
 	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id) {
-		this.id = id;
-	}
     public String getFirstName() {
         return firstName;
     }
@@ -76,7 +68,7 @@ public class User extends DomainObject {
 	
 	 @Override
 	public int hashCode() {
-		 return Objects.hash(id, firstName, lastName, email, birthday);
+		 return Objects.hash(getId(), firstName, lastName, email, birthday);
 	}
 
 	@Override
@@ -103,10 +95,10 @@ public class User extends DomainObject {
 				return false;
 		} else if (!firstName.equals(other.firstName))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (getId() == null) {
+			if (other.getId() != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!getId().equals(other.getId()))
 			return false;
 		if (lastName == null) {
 			if (other.lastName != null)
