@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -16,7 +17,7 @@ import com.epam.spring.core.domain.EventRating;
 import com.epam.spring.core.service.IAuditoriumService;
 import com.epam.spring.core.service.IEventService;
 
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(classes = { AppConfig.class }, loader = AnnotationConfigContextLoader.class)
 public class EventServiceTest extends AbstractTestNGSpringContextTests {
 
 	private static final Long TEST_ID = 1l;

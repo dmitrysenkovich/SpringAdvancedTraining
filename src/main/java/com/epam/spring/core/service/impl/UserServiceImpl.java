@@ -2,12 +2,20 @@ package com.epam.spring.core.service.impl;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.epam.spring.core.dao.IUserDao;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.IUserService;
 
+/**
+ * @author alehstruneuski
+ */
+@Service
 public class UserServiceImpl implements IUserService {
 	
+	@Autowired
 	private IUserDao userDao;
 
 	@Override
@@ -35,12 +43,4 @@ public class UserServiceImpl implements IUserService {
 		return userDao.getUserByEmail(email);
 	}
 	
-	public IUserDao getUserDao() {
-		return userDao;
-	}
-
-	public void setUserDao(IUserDao userDao) {
-		this.userDao = userDao;
-	}
-
 }

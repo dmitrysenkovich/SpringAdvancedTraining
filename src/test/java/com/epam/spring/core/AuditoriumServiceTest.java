@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -17,7 +18,7 @@ import org.testng.annotations.Test;
 import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.service.IAuditoriumService;
 
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
+@ContextConfiguration(classes = { AppConfig.class }, loader = AnnotationConfigContextLoader.class)
 public class AuditoriumServiceTest extends AbstractTestNGSpringContextTests {
 	
 	@Autowired

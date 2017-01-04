@@ -6,9 +6,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
 import com.epam.spring.core.dao.IUserDao;
 import com.epam.spring.core.domain.User;
 
+/**
+ * @author alehstruneuski
+ */
+@Repository
 public class UserDaoImpl implements IUserDao {
 
 	private static Map<Long, User> users = new HashMap<Long, User>();

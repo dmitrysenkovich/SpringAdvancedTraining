@@ -3,11 +3,20 @@ package com.epam.spring.core.service.impl;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+
 import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.service.IAuditoriumService;
 
+/**
+ * @author alehstruneuski
+ */
+@Service
 public class AuditoriumServiceImpl implements IAuditoriumService {
 
+	@Resource(name="bunchOfAuditoriums")
 	private Map<String, Auditorium> auditoriums;
 
 	@Override
@@ -20,8 +29,4 @@ public class AuditoriumServiceImpl implements IAuditoriumService {
 		return auditoriums.get(name);
 	}
 	
-	public void setAuditoriums(Map<String, Auditorium> auditoriums) {
-		this.auditoriums = auditoriums;
-	}
-
 }

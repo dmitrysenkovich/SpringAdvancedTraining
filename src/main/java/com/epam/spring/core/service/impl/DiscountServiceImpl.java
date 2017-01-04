@@ -3,15 +3,26 @@ package com.epam.spring.core.service.impl;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.IDiscountService;
 import com.epam.spring.core.service.IUserService;
 import com.epam.spring.core.service.discount.IDiscount;
 
+/**
+ * @author alehstruneuski
+ */
+@Service
 public class DiscountServiceImpl implements IDiscountService {
 
+	@Autowired
 	private IUserService userService;
+	@Resource(name="bunchOfDiscounts")
 	private List<IDiscount> discounts;
 
 	@Override
@@ -26,14 +37,6 @@ public class DiscountServiceImpl implements IDiscountService {
 			}
 		}
 		return discountCurrent;
-	}
-	
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
-	}
-	
-	public void setDiscounts(List<IDiscount> discounts) {
-		this.discounts = discounts;
 	}
 
 	private User checkIfRegisteredUser(User userFromDB, User passeUser) {

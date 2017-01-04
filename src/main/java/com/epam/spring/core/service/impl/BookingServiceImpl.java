@@ -4,6 +4,9 @@ import java.time.LocalDateTime;
 import java.util.NavigableMap;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.EventRating;
@@ -15,14 +18,22 @@ import com.epam.spring.core.service.IDiscountService;
 import com.epam.spring.core.service.IEventService;
 import com.epam.spring.core.service.IUserService;
 
+/**
+ * @author alehstruneuski
+ */
+@Service
 public class BookingServiceImpl implements IBookingService {
 	
 	private static final double RATE_FOR_HIGHT_EVENT_RAITING = 1.2;
 	private static final double RATE_VIP_SEAT = 2;
 
+	@Autowired
 	private IDiscountService discountService;
+	@Autowired
 	private IAuditoriumService auditoriumService;
+	@Autowired
 	private IEventService eventService;
+	@Autowired
 	private IUserService userService;
 	
 	@Override
@@ -73,22 +84,6 @@ public class BookingServiceImpl implements IBookingService {
 		NavigableMap<LocalDateTime, Auditorium> auditoriums = choosenEvent.getAuditoriums();
 		Auditorium auditorium = auditoriums.get(dateTime);
 		return auditorium.getTickets();
-	}
-	
-	public void setDiscountService(IDiscountService discountService) {
-		this.discountService = discountService;
-	}
-
-	public void setAuditoriumService(IAuditoriumService auditoriumService) {
-		this.auditoriumService = auditoriumService;
-	}
-
-	public void setEventService(IEventService eventService) {
-		this.eventService = eventService;
-	}
-
-	public void setUserService(IUserService userService) {
-		this.userService = userService;
 	}
 	
 }

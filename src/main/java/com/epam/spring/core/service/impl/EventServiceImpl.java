@@ -2,12 +2,20 @@ package com.epam.spring.core.service.impl;
 
 import java.util.Collection;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.epam.spring.core.dao.IEventServiceDao;
 import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.service.IEventService;
 
+/**
+ * @author alehstruneuski
+ */
+@Service
 public class EventServiceImpl implements IEventService {
 	
+	@Autowired
 	private IEventServiceDao eventServiceDao;
 
 	@Override
@@ -33,10 +41,6 @@ public class EventServiceImpl implements IEventService {
 	@Override
 	public Event getByName(String name) {
 		return eventServiceDao.getByName(name);
-	}
-
-	public void setEventServiceDao(IEventServiceDao eventServiceDao) {
-		this.eventServiceDao = eventServiceDao;
 	}
 
 }

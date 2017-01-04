@@ -7,9 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Repository;
+
 import com.epam.spring.core.dao.IEventServiceDao;
 import com.epam.spring.core.domain.Event;
 
+/**
+ * @author alehstruneuski
+ */
+@Repository
 public class EventServiceDaoImpl implements IEventServiceDao {
 
 	private static Map<Long, Event> events = new HashMap<Long, Event>();
