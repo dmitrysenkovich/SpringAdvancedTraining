@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 import com.epam.spring.core.config.LargeAuditoriumConfig;
@@ -20,6 +21,7 @@ import com.epam.spring.core.service.discount.impl.LuckyDiscountStrategyImpl;
 
 @Configuration
 @ComponentScan("com.epam.spring.core")
+@EnableAspectJAutoProxy
 public class AppConfig {
 	
 	@Autowired

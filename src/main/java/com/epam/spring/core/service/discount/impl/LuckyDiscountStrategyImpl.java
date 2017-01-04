@@ -6,6 +6,9 @@ import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.discount.IDiscount;
 
+/**
+ * @author alehstruneuski
+ */
 public class LuckyDiscountStrategyImpl implements IDiscount {
 
 	private static final double LUCKY_DISCOUNT = 0.50;

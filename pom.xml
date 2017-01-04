@@ -106,12 +106,33 @@
     		<artifactId>spring-test</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+
+		<!-- Aspect -->  
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.6.11</version>
+		</dependency>
+		<!-- Aspect -->  
 		
+		<!-- TestNG -->  
 		<dependency>
     		<groupId>org.testng</groupId>
     		<artifactId>testng</artifactId>
     		<version>6.10</version>
 		</dependency>
+		<!-- TestNG -->  
 		
 		<!-- Jackson JSON Mapper -->  
   		<dependency>

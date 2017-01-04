@@ -9,6 +9,9 @@ import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.discount.IDiscount;
 
+/**
+ * @author alehstruneuski
+ */
 public class BirthdayDiscountImpl implements IDiscount {
 
 	private static final double BIRTHDAY_DISCOUNT = 0.05;
