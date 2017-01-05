@@ -1,18 +1,18 @@
-package com.epam.spring.core.dao.impl;
+package com.epam.spring.core.dao.statistics.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.epam.spring.core.dao.ICounterAspectDao;
+import com.epam.spring.core.dao.statistics.ICounterAspectDao;
 import com.epam.spring.core.domain.statistics.CounterStatisticsEvent;
 
 /**
  * @author alehstruneuski
  */
 @Repository
-public class CounterAspectImpl implements ICounterAspectDao {
+public class CounterAspectDaoImpl implements ICounterAspectDao {
 
 	private Map<Long, CounterStatisticsEvent> statistics = new HashMap<>();
 	

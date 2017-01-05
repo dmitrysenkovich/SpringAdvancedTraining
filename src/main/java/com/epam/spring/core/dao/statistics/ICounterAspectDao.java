@@ -1,4 +1,4 @@
-package com.epam.spring.core.dao;
+package com.epam.spring.core.dao.statistics;
 
 import com.epam.spring.core.domain.statistics.CounterStatisticsEvent;
 
