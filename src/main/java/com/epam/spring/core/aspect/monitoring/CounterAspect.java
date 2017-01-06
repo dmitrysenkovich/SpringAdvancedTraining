@@ -1,4 +1,4 @@
-package com.epam.spring.core.statistics;
+package com.epam.spring.core.aspect.monitoring;
 
 import java.util.Set;
 
