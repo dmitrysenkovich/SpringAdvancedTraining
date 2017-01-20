@@ -1,6 +1,6 @@
 package com.epam.spring.core.service;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +27,6 @@ public interface IDiscountService {
      *            Number of tickets that user buys
      * @return discount value from 0 to 100
      */
-    double getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull LocalDateTime airDateTime, long numberOfTickets);
+    double getDiscount(@Nullable User user, @Nonnull Event event, @Nonnull Date airDateTime, long numberOfTickets);
 
 }

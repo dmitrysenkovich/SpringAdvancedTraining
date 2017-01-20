@@ -1,7 +1,7 @@
 package com.epam.spring.core.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.NavigableMap;
+import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,7 @@ public class BookingServiceImpl implements IBookingService {
 	private IUserService userService;
 	
 	@Override
-	public double getTicketsPrice(Event event, LocalDateTime dateTime, User user, Set<Long> seats) {	
+	public double getTicketsPrice(Event event, Date dateTime, User user, Set<Long> seats) {	
 		double discount = discountService.getDiscount(user, event, dateTime, seats.size());
 		double basePrice = event.getBasePrice();
 		if (event.getRating() == EventRating.HIGH) {
@@ -66,7 +66,7 @@ public class BookingServiceImpl implements IBookingService {
 		for (Ticket ticket : tickets) {
 			Long eventId = ticket.getEvent().getId();
 			Event event = eventService.getById(eventId);
-			event.getAuditoriums().get(ticket.getDateTime()).addTicket(ticket);
+			event.getAuditoriums().get(ticket.getDate()).addTicket(ticket);
 			
 			User userOfTicket = ticket.getUser();
 			Long userId = userOfTicket.getId();
@@ -79,9 +79,9 @@ public class BookingServiceImpl implements IBookingService {
 	}
 
 	@Override
-	public Set<Ticket> getPurchasedTicketsForEvent(Event event, LocalDateTime dateTime) {
+	public Set<Ticket> getPurchasedTicketsForEvent(Event event, Date dateTime) {
 		Event choosenEvent = eventService.getById(event.getId());
-		NavigableMap<LocalDateTime, Auditorium> auditoriums = choosenEvent.getAuditoriums();
+		Map<Date, Auditorium> auditoriums = choosenEvent.getAuditoriums();
 		Auditorium auditorium = auditoriums.get(dateTime);
 		return auditorium.getTickets();
 	}

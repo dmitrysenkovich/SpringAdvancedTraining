@@ -7,6 +7,11 @@ import com.epam.spring.core.domain.DomainObject;
  */
 public class DiscountStatistics extends DomainObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5646129808635247852L;
+	
 	private Long birthdayDiscount;
 	private Long luckyDiscount;
 	

@@ -1,10 +1,11 @@
 package com.epam.spring.core;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -13,6 +14,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.epam.spring.core.app.AppConfig;
 import com.epam.spring.core.constants.TestConstants;
 import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.EventRating;
@@ -24,19 +26,17 @@ import com.epam.spring.core.service.IBookingService;
 public class BookingServiceTest extends AbstractTestNGSpringContextTests {
 	
 	// EVENT
-	private static final Long EVENT_TEST_ID = 1l;
 	private static final String EVENT_TEST_NAME = "EPAM";
 	private static final double EVENT_TEST_PRICE = 100.0;
 	private static final EventRating EVENT_TEST_RATING = EventRating.HIGH;
 	
 	// USER
-	private static final Long USER_TEST_ID = 1l;
 	private static final String USER_TEST_FIRST_NAME = "Aleh";
 	private static final String USER_TEST_LAST_NAME = "Struneuski";
 	private static final String USER_TEST_EMAIL = "aleh_struneuski@epam.com";
-	private static final LocalDateTime USER_TEST_BIRTHDAY = LocalDateTime.of(1993, 8, 12, 18, 30);
+	private static final Date USER_TEST_BIRTHDAY = new DateTime(1993, 8, 12, 18, 30, 0, 0).toDate();
 	
-	private static final LocalDateTime TEST_DATE_TIME = LocalDateTime.of(2017, 2, 3, 18, 30);
+	private static final Date TEST_DATE_TIME = new DateTime(2017, 2, 3, 18, 30, 0, 0).toDate();
 	
 	private static final double EXPECTED_TICKETS_PRICE = 240.0;
 
@@ -49,7 +49,6 @@ public class BookingServiceTest extends AbstractTestNGSpringContextTests {
 	@BeforeClass
 	public void initEventTest() {
 		event = new Event();
-		event.setId(EVENT_TEST_ID);
 		event.setName(EVENT_TEST_NAME);
 		event.setBasePrice(EVENT_TEST_PRICE);
 		event.setRating(EVENT_TEST_RATING);
@@ -58,7 +57,6 @@ public class BookingServiceTest extends AbstractTestNGSpringContextTests {
 	@BeforeClass
 	public void initUserTest() {	
 		user = new User();
-		user.setId(USER_TEST_ID);
 		user.setFirstName(USER_TEST_FIRST_NAME);
 		user.setLastName(USER_TEST_LAST_NAME);
 		user.setEmail(USER_TEST_EMAIL);
@@ -74,8 +72,8 @@ public class BookingServiceTest extends AbstractTestNGSpringContextTests {
 	
 	@Test(dependsOnGroups = { TestConstants.GROUP_EVENT_SAVE, TestConstants.GROUP_USER_SAVE }, description = "getPurchasedTicketsForEvent()")
 	public void getPurchasedTicketsForEventTest() {
-		Ticket firstTestTicket = new Ticket(user, event, TEST_DATE_TIME, 1, false); 
-		Ticket secondTestTicket = new Ticket(user, event, TEST_DATE_TIME, 2, false);
+		Ticket firstTestTicket = new Ticket(user, event, 1, false); 
+		Ticket secondTestTicket = new Ticket(user, event, 2, false);
 		
 		Set<Ticket> tickets = new HashSet<>();
 		tickets.add(firstTestTicket);

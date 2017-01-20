@@ -1,6 +1,6 @@
 package com.epam.spring.core.service.impl;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -26,7 +26,7 @@ public class DiscountServiceImpl implements IDiscountService {
 	private List<IDiscount> discounts;
 
 	@Override
-	public double getDiscount(User user, Event event, LocalDateTime airDateTime, long numberOfTickets) {
+	public double getDiscount(User user, Event event, Date airDateTime, long numberOfTickets) {
 		User userFromDB = userService.getById(user.getId());
 		User userToCountDiscount = checkIfRegisteredUser(userFromDB, user);
 		double discountCurrent = 0;

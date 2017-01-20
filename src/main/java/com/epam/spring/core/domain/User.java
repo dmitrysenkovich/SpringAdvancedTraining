@@ -1,21 +1,47 @@
 package com.epam.spring.core.domain;
 
-import java.time.LocalDateTime;
-import java.util.NavigableSet;
+import java.util.Date;
 import java.util.Objects;
-import java.util.TreeSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 /**
  * @author alehstruneuski
  */
+@Entity
+@Table(name = "user")
 public class User extends DomainObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7770363918609493353L;
+	
+	@Column(name = "first_name")
 	private String firstName;
+	@Column(name = "last_name")
 	private String lastName;
+	@Column(name = "email")
     private String email;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "birthday")
+	private Date birthday;	
+	@OneToMany
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private Set<Ticket> tickets;
+	@Transient
     private boolean isRegistered;
-	private LocalDateTime birthday;
-	private NavigableSet<Ticket> tickets = new TreeSet<>();
+	
+    public User() {
+    }
 	
     public String getFirstName() {
         return firstName;
@@ -49,19 +75,19 @@ public class User extends DomainObject {
 		this.isRegistered = isRegistered;
 	}
 
-    public NavigableSet<Ticket> getTickets() {
+    public Set<Ticket> getTickets() {
         return tickets;
     }
 
-    public void setTickets(NavigableSet<Ticket> tickets) {
+    public void setTickets(Set<Ticket> tickets) {
         this.tickets = tickets;
     }
     
-    public LocalDateTime getBirthday() {
+    public Date getBirthday() {
 		return birthday;
 	}
 
-	public void setBirthday(LocalDateTime birthday) {
+	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
 	

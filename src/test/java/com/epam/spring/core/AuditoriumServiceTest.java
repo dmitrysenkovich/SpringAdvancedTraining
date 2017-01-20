@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,6 +14,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.epam.spring.core.app.AppConfig;
 import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.service.IAuditoriumService;
 
@@ -34,24 +34,24 @@ public class AuditoriumServiceTest extends AbstractTestNGSpringContextTests {
 	//expected attribute of small auditorium
 	private final static String NAME_OF_SMALL_AUDITORIUM = "small";
 	private final static int NUMBER_OF_SEATS_SMALL_AUDITORIUM = 50;
-	private final static String VIP_SEATS_OF_SMALL_AUDITORIUM = "5,6,7";
+	private final static List<Long> VIP_SEATS_OF_SMALL_AUDITORIUM = Arrays.asList(5l, 6l ,7l);
 	
 	//expected attribute of large auditorium
 	private final static String NAME_OF_LARGE_AUDITORIUM = "large";
 	private final static int NUMBER_OF_SEATS_LARGE_AUDITORIUM = 60;
-	private final static String VIP_SEATS_OF_LARGE_AUDITORIUM = "5,6,7,8,9,10";
+	private final static List<Long> VIP_SEATS_OF_LARGE_AUDITORIUM = Arrays.asList(5l , 6l, 7l , 8l, 9l, 10l);
 	
 	@BeforeClass
 	public void initAuditoriumsTest() {
 		smallAuditorium = new Auditorium();
 		smallAuditorium.setName(NAME_OF_SMALL_AUDITORIUM);
 		smallAuditorium.setNumberOfSeats(NUMBER_OF_SEATS_SMALL_AUDITORIUM);
-		smallAuditorium.setVipSeats(getVipSeats(VIP_SEATS_OF_SMALL_AUDITORIUM));
+		smallAuditorium.setVipSeats(new HashSet<Long>(VIP_SEATS_OF_SMALL_AUDITORIUM));
 		
 		largeAuditorium = new Auditorium();
 		largeAuditorium.setName(NAME_OF_LARGE_AUDITORIUM);
 		largeAuditorium.setNumberOfSeats(NUMBER_OF_SEATS_LARGE_AUDITORIUM);
-		largeAuditorium.setVipSeats(getVipSeats(VIP_SEATS_OF_LARGE_AUDITORIUM));
+		largeAuditorium.setVipSeats(new HashSet<Long>(VIP_SEATS_OF_LARGE_AUDITORIUM));
 	}
 	
 	@BeforeClass(dependsOnMethods = "initAuditoriumsTest")
@@ -73,15 +73,6 @@ public class AuditoriumServiceTest extends AbstractTestNGSpringContextTests {
 		Auditorium auditoriumLargeActual = auditoriumService.getByName(NAME_OF_LARGE_AUDITORIUM);
 		Assert.assertEquals(auditoriumSmallActual, smallAuditorium);
 		Assert.assertEquals(auditoriumLargeActual, largeAuditorium);
-	}
-	
-	private Set<Long> getVipSeats(String vipSeatsOfSmallAuditorium) {
-		Set<Long> bunchOfVipSeats = new HashSet<>();
-		List<String> vipSeats = Arrays.asList(vipSeatsOfSmallAuditorium.split(","));
-		for (String vipSeat : vipSeats) {
-			bunchOfVipSeats.add(Long.valueOf(vipSeat.trim()));
-		}
-		return bunchOfVipSeats;
 	}
 	
 }

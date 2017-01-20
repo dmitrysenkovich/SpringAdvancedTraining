@@ -1,26 +1,56 @@
 package com.epam.spring.core.domain;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.NavigableSet;
-import java.util.Objects;
+import java.util.Date;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
+
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  * @author alehstruneuski
  */
-public class Auditorium {
+@Entity
+@Table(name = "auditorium")
+public class Auditorium extends DomainObject {
 
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -1927343050850714131L;
+	
+	@Column(name = "name")
+	private String name;
+	@Column(name = "number_of_seats")
     private long numberOfSeats;
-	private NavigableSet<Ticket> tickets = new TreeSet<>();
-    private Set<Long> vipSeats = Collections.emptySet();
-
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
+	@OneToMany(mappedBy = "auditorium")
+	private Set<Ticket> tickets;
+    @ElementCollection
+    @CollectionTable(name = "vip_seats", joinColumns = @JoinColumn(name = "auditorium_id"))
+    @Column(name="vip_seats")
+    private Set<Long> vipSeats;
+    
     public Auditorium() {
     }
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
     
     public void addTicket(Ticket ticket) {
     	tickets.add(ticket);
@@ -30,7 +60,7 @@ public class Auditorium {
     	tickets.remove(ticket);
     }
     
-    public NavigableSet<Ticket> getTickets() {
+    public Set<Ticket> getTickets() {
     	return tickets;
     }
 
@@ -54,7 +84,7 @@ public class Auditorium {
     	return vipSeats.contains(id);
     }
 
-    public String getName() {
+	public String getName() {
         return name;
     }
 
@@ -82,31 +112,40 @@ public class Auditorium {
         this.vipSeats = vipSeats;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name);
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((date == null) ? 0 : date.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        Auditorium other = (Auditorium) obj;
-        if (name == null) {
-            if (other.name != null) {
-                return false;
-            }
-        } else if (!name.equals(other.name)) {
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Auditorium other = (Auditorium) obj;
+		if (getId() == null) {
+			if (other.getId() != null)
+				return false;
+		} else if (!getId().equals(other.getId()))
+			return false;
+		if (date == null) {
+			if (other.date != null)
+				return false;
+		} else if (!date.equals(other.date))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
+	}
 
 }

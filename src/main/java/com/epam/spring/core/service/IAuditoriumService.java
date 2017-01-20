@@ -27,5 +27,13 @@ public interface IAuditoriumService {
      * @return found auditorium or <code>null</code>
      */
     public @Nullable Auditorium getByName(@Nonnull String name);
+    
+    public @Nullable Auditorium getById(@Nonnull Long id);
+
+    public @Nullable Auditorium save(@Nonnull Auditorium auditorium);
+    
+    public @Nullable void remove(@Nonnull Auditorium auditorium);
+
+
 
 }

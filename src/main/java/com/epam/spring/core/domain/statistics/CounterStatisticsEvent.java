@@ -7,6 +7,11 @@ import com.epam.spring.core.domain.DomainObject;
  */
 public class CounterStatisticsEvent extends DomainObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7646358289540284797L;
+
 	private Long numberOfAccessByName;
 	private Long numberOfAccessByPrice;
 	private Long numberOfbookedTickets;

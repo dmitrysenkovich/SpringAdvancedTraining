@@ -1,12 +1,15 @@
 package com.epam.spring.core.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
-import javax.annotation.Resource;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.epam.spring.core.dao.AuditoriumRepository;
 import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.service.IAuditoriumService;
 
@@ -16,17 +19,35 @@ import com.epam.spring.core.service.IAuditoriumService;
 @Service
 public class AuditoriumServiceImpl implements IAuditoriumService {
 
-	@Resource(name="bunchOfAuditoriums")
-	private Map<String, Auditorium> auditoriums;
+	@Autowired
+	private AuditoriumRepository auditoriuRepository;
 
 	@Override
 	public Collection<Auditorium> getAll() {
-		return auditoriums.values();
+		List<Auditorium> targetCollection = new ArrayList<Auditorium>();
+		Iterable<Auditorium> eventIterator = auditoriuRepository.findAll();
+		CollectionUtils.addAll(targetCollection, eventIterator.iterator());
+		return targetCollection;
 	}
 
 	@Override
 	public Auditorium getByName(String name) {
-		return auditoriums.get(name);
+		return auditoriuRepository.findByName(name);
+	}
+
+	@Override
+	public Auditorium getById(Long id) {
+		return auditoriuRepository.findById(id);
+	}
+
+	@Override
+	public Auditorium save(Auditorium auditorium) {
+		return auditoriuRepository.save(auditorium);
+	}
+
+	@Override
+	public void remove(Auditorium auditorium) {
+		auditoriuRepository.delete(auditorium.getId());;
 	}
 	
 }

@@ -1,7 +1,9 @@
 package com.epam.spring.core;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeFieldType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
@@ -10,6 +12,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.epam.spring.core.app.AppConfig;
 import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.EventRating;
 import com.epam.spring.core.domain.User;
@@ -22,9 +25,11 @@ public class DiscountServiceTest extends AbstractTestNGSpringContextTests {
 	private static final Long TEST_ID_USER = 1l;
 	private static final String TEST_USER_FIRST_NAME = "Aleh";
 	private static final String TEST_USER_LAST_NAME = "Struneuski";
-	private static final String TEST_USER_EMAIL = "aleh_struneuski@epam.com";
-	private static final LocalDateTime TEST_BIRTHDAY = LocalDateTime.of(1993, 8, 12, 10, 29);
-		
+	private static final String TEST_USER_EMAIL = "aleh_struneuski@epam.com";	
+	
+	private static final DateTime TEST_USER_BIRTHDAY_DATE_TIME = new DateTime(1993, 8, 12, 10, 29, 0, 0);
+	private static final Date TEST_USER_BIRTHDAY = TEST_USER_BIRTHDAY_DATE_TIME.toDate();
+
 	// Event
 	private static final Long TEST_ID_EVENT = 1l;
 	private static final String TEST_NAME = "EPAM";
@@ -50,7 +55,7 @@ public class DiscountServiceTest extends AbstractTestNGSpringContextTests {
 		testUser.setFirstName(TEST_USER_FIRST_NAME);
 		testUser.setLastName(TEST_USER_LAST_NAME);
 		testUser.setEmail(TEST_USER_EMAIL);
-		testUser.setBirthday(TEST_BIRTHDAY);
+		testUser.setBirthday(TEST_USER_BIRTHDAY);
 		
 		testEvent = new Event();
 		testEvent.setId(TEST_ID_EVENT);
@@ -58,31 +63,31 @@ public class DiscountServiceTest extends AbstractTestNGSpringContextTests {
 		testEvent.setBasePrice(TEST_PRICE);
 		testEvent.setRating(TEST_RATING);
 		
-		dayOfMonthUserBirthday = TEST_BIRTHDAY.getMonthValue();
-		monthOfUserBirthday = TEST_BIRTHDAY.getDayOfMonth();
+		dayOfMonthUserBirthday = TEST_USER_BIRTHDAY_DATE_TIME.get(DateTimeFieldType.monthOfYear());
+		monthOfUserBirthday = TEST_USER_BIRTHDAY_DATE_TIME.get(DateTimeFieldType.dayOfMonth());
 	}
 	
 	@Test(description = "invoke lucky discount")
 	public void getDiscountEachTenthTicket() {
-		LocalDateTime airDateTime = LocalDateTime.of(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).minusDays(2);
+		Date airDateTime = new DateTime(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).minusDays(2).toDate();
 		double discountActual = discountService.getDiscount(testUser, testEvent, airDateTime, 20);		
 		Assert.assertEquals(discountActual, EXPECTED_HAPPY_DISCOUNT);
 	}
 	
 	@Test(description = "invoke birthday discount")
 	public void getDiscountBirthday() {		
-		LocalDateTime airDateTimeEventOnTime = LocalDateTime.of(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00);
+		Date airDateTimeEventOnTime = new DateTime(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).toDate();
 		double discountActualWithinOneDay = discountService.getDiscount(testUser, testEvent, airDateTimeEventOnTime, 9);		
 		Assert.assertEquals(discountActualWithinOneDay, EXPECTED_BIRTHDAY_DISCOUNT);
 		
-		LocalDateTime airDateTimeEventFiveDay = LocalDateTime.of(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).plusDays(5);
+		Date airDateTimeEventFiveDay = new DateTime(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).plusDays(5).toDate();
 		double discountActualWithinFiveDay = discountService.getDiscount(testUser, testEvent, airDateTimeEventFiveDay, 9);		
 		Assert.assertEquals(discountActualWithinFiveDay, EXPECTED_BIRTHDAY_DISCOUNT);
 	}
 	
 	@Test(description = "invoke all discounts")
 	public void getDiscountMatchAlllRequirements() {
-		LocalDateTime airDateTimeEventFiveDay = LocalDateTime.of(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).plusDays(2);
+		Date airDateTimeEventFiveDay = new DateTime(0000, dayOfMonthUserBirthday, monthOfUserBirthday, 00, 00).plusDays(2).toDate();
 		double discountActualWithinFiveDay = discountService.getDiscount(testUser, testEvent, airDateTimeEventFiveDay, 10);		
 		Assert.assertEquals(discountActualWithinFiveDay, EXPECTED_HAPPY_DISCOUNT);
 	}
