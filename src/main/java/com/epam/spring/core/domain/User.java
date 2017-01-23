@@ -13,6 +13,9 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 /**
  * @author alehstruneuski
  */
@@ -31,6 +34,7 @@ public class User extends DomainObject {
 	private String lastName;
 	@Column(name = "email")
     private String email;
+	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "birthday")
 	private Date birthday;	

@@ -1,40 +1,36 @@
-package com.epam.spring.core;
+package com.epam.spring.core.service;
 
 import java.util.Date;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeFieldType;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.epam.spring.core.app.AppConfig;
 import com.epam.spring.core.domain.Event;
-import com.epam.spring.core.domain.EventRating;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.IDiscountService;
+import com.epam.spring.core.service.IEventService;
+import com.epam.spring.core.service.IUserService;
 
 @ContextConfiguration(classes = { AppConfig.class }, loader = AnnotationConfigContextLoader.class)
-public class DiscountServiceTest extends AbstractTestNGSpringContextTests {
+@TransactionConfiguration
+public class DiscountServiceTest extends AbstractTransactionalTestNGSpringContextTests {
 
 	// User
-	private static final Long TEST_ID_USER = 1l;
-	private static final String TEST_USER_FIRST_NAME = "Aleh";
-	private static final String TEST_USER_LAST_NAME = "Struneuski";
 	private static final String TEST_USER_EMAIL = "aleh_struneuski@epam.com";	
-	
-	private static final DateTime TEST_USER_BIRTHDAY_DATE_TIME = new DateTime(1993, 8, 12, 10, 29, 0, 0);
-	private static final Date TEST_USER_BIRTHDAY = TEST_USER_BIRTHDAY_DATE_TIME.toDate();
 
 	// Event
-	private static final Long TEST_ID_EVENT = 1l;
-	private static final String TEST_NAME = "EPAM";
-	private static final double TEST_PRICE = 100.0;
-	private static final EventRating TEST_RATING = EventRating.HIGH;
+	private static final String TEST_EVENT_NAME = "EPAM";
+
 	
 	//Expected discount
 	private static final double EXPECTED_HAPPY_DISCOUNT = 0.5;
@@ -42,29 +38,25 @@ public class DiscountServiceTest extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private IDiscountService discountService;
-	private User testUser;
+	@Autowired
+	private IUserService userService;
+	@Autowired
+	private IEventService eventService;
+
 	private Event testEvent;
+	private User testUser;
 	
-	private static int dayOfMonthUserBirthday;
-	private static int monthOfUserBirthday;
+	private int dayOfMonthUserBirthday;
+	private int monthOfUserBirthday;
 	
 	@BeforeClass
 	public void initTest() {
-		testUser = new User();
-		testUser.setId(TEST_ID_USER);
-		testUser.setFirstName(TEST_USER_FIRST_NAME);
-		testUser.setLastName(TEST_USER_LAST_NAME);
-		testUser.setEmail(TEST_USER_EMAIL);
-		testUser.setBirthday(TEST_USER_BIRTHDAY);
+		testEvent = eventService.getByName(TEST_EVENT_NAME);
+		testUser = userService.getUserByEmail(TEST_USER_EMAIL);
 		
-		testEvent = new Event();
-		testEvent.setId(TEST_ID_EVENT);
-		testEvent.setName(TEST_NAME);
-		testEvent.setBasePrice(TEST_PRICE);
-		testEvent.setRating(TEST_RATING);
-		
-		dayOfMonthUserBirthday = TEST_USER_BIRTHDAY_DATE_TIME.get(DateTimeFieldType.monthOfYear());
-		monthOfUserBirthday = TEST_USER_BIRTHDAY_DATE_TIME.get(DateTimeFieldType.dayOfMonth());
+		String userBirthday = testUser.getBirthday().toString();
+		dayOfMonthUserBirthday = getDate(userBirthday, "YYYY-MM-dd HH:mm:ss.SSS").getMonthOfYear();
+		monthOfUserBirthday = getDate(userBirthday, "YYYY-MM-dd HH:mm:ss.SSS").getDayOfMonth();	
 	}
 	
 	@Test(description = "invoke lucky discount")
@@ -91,5 +83,9 @@ public class DiscountServiceTest extends AbstractTestNGSpringContextTests {
 		double discountActualWithinFiveDay = discountService.getDiscount(testUser, testEvent, airDateTimeEventFiveDay, 10);		
 		Assert.assertEquals(discountActualWithinFiveDay, EXPECTED_HAPPY_DISCOUNT);
 	}
+	
+    private static DateTime getDate(String date, String pattern) {
+        return DateTimeFormat.forPattern(pattern).parseDateTime(date).withZone(DateTimeZone.getDefault());
+    }
 	
 }

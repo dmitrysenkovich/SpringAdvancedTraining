@@ -38,7 +38,7 @@ public class CounterAspect {
 		  		CounterStatisticsEvent counterStatisticsEventNew = new CounterStatisticsEvent();
 		  		counterStatisticsEventNew.setId(id);
 		  		counterStatisticsEventNew.increaseNumberOfAccessBookedTickets();
-		      	counterAspectDao.updateStatistics(counterStatisticsEventNew);	
+		      	counterAspectDao.insertStatistics(counterStatisticsEventNew);	
 		  	}	
 		}
 	}
@@ -55,7 +55,7 @@ public class CounterAspect {
 	  		CounterStatisticsEvent counterStatisticsEvent = new CounterStatisticsEvent();
 	  		counterStatisticsEvent.setId(id);
 	  		counterStatisticsEvent.increaseNumberOfAccessByPrice();
-	      	counterAspectDao.updateStatistics(counterStatisticsEvent);	
+	      	counterAspectDao.insertStatistics(counterStatisticsEvent);	
 	  	}
 	}
 	  	
@@ -73,7 +73,7 @@ public class CounterAspect {
     		CounterStatisticsEvent counterStatisticsEvent = new CounterStatisticsEvent();
     		counterStatisticsEvent.setId(id);
     		counterStatisticsEvent.increaseNumberOfAccessByName();
-        	counterAspectDao.updateStatistics(counterStatisticsEvent);
+        	counterAspectDao.insertStatistics(counterStatisticsEvent);
     	}
     }
     

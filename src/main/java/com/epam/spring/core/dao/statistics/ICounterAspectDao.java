@@ -6,6 +6,7 @@ public interface ICounterAspectDao {
 
 	public CounterStatisticsEvent getStatisticsById(Long id);
 	public void updateStatistics(CounterStatisticsEvent cointerStatisticsEvent);
+	public void insertStatistics(CounterStatisticsEvent cointerStatisticsEvent);
 	
 }
  

@@ -1,6 +1,7 @@
 package com.epam.spring.core.domain;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -46,7 +47,7 @@ public class Event extends DomainObject {
 			inverseJoinColumns = @JoinColumn(name = "auditorium_id"))
 	@MapKey(name = "date")    
 	@MapKeyTemporal(TemporalType.TIMESTAMP)
-	private Map<Date, Auditorium> auditoriums;
+	private Map<Date, Auditorium> auditoriums = new HashMap<>();
     
 	@OneToMany(mappedBy = "event")
 	private Set<Ticket> tickets;

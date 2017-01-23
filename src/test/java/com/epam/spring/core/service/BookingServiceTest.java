@@ -1,4 +1,4 @@
-package com.epam.spring.core;
+package com.epam.spring.core.service;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -15,9 +15,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.epam.spring.core.app.AppConfig;
-import com.epam.spring.core.constants.TestConstants;
 import com.epam.spring.core.domain.Event;
-import com.epam.spring.core.domain.EventRating;
 import com.epam.spring.core.domain.Ticket;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.IBookingService;
@@ -27,60 +25,52 @@ public class BookingServiceTest extends AbstractTestNGSpringContextTests {
 	
 	// EVENT
 	private static final String EVENT_TEST_NAME = "EPAM";
-	private static final double EVENT_TEST_PRICE = 100.0;
-	private static final EventRating EVENT_TEST_RATING = EventRating.HIGH;
 	
 	// USER
-	private static final String USER_TEST_FIRST_NAME = "Aleh";
-	private static final String USER_TEST_LAST_NAME = "Struneuski";
 	private static final String USER_TEST_EMAIL = "aleh_struneuski@epam.com";
-	private static final Date USER_TEST_BIRTHDAY = new DateTime(1993, 8, 12, 18, 30, 0, 0).toDate();
+
 	
 	private static final Date TEST_DATE_TIME = new DateTime(2017, 2, 3, 18, 30, 0, 0).toDate();
-	
 	private static final double EXPECTED_TICKETS_PRICE = 240.0;
 
 	@Autowired
 	private IBookingService bookingService;
+	@Autowired
+	private IUserService userService;
+	@Autowired
+	private IEventService eventService;	
 
-	private Event event;
-	private User user;
+	private Event testEvent;
+	private User testUser;
 
 	@BeforeClass
 	public void initEventTest() {
-		event = new Event();
-		event.setName(EVENT_TEST_NAME);
-		event.setBasePrice(EVENT_TEST_PRICE);
-		event.setRating(EVENT_TEST_RATING);
+		testEvent = eventService.getByName(EVENT_TEST_NAME);
 	}
 	
 	@BeforeClass
 	public void initUserTest() {	
-		user = new User();
-		user.setFirstName(USER_TEST_FIRST_NAME);
-		user.setLastName(USER_TEST_LAST_NAME);
-		user.setEmail(USER_TEST_EMAIL);
-		user.setBirthday(USER_TEST_BIRTHDAY);
+		testUser = userService.getUserByEmail(USER_TEST_EMAIL);
 	}
 
-	@Test(dependsOnGroups = { TestConstants.GROUP_EVENT_SAVE, TestConstants.GROUP_USER_SAVE }, description = "getTicketsPrice()")
+	@Test(description = "getTicketsPrice()")
 	public void getTicketsPriceTest() {
 		Set<Long> seats = new HashSet<>(Arrays.asList(1l, 2l));
-		double actualTicketsPrice = bookingService.getTicketsPrice(event, TEST_DATE_TIME, user, seats);
+		double actualTicketsPrice = bookingService.getTicketsPrice(testEvent, TEST_DATE_TIME, testUser, seats);
 		Assert.assertEquals(actualTicketsPrice, EXPECTED_TICKETS_PRICE);
 	}
 	
-	@Test(dependsOnGroups = { TestConstants.GROUP_EVENT_SAVE, TestConstants.GROUP_USER_SAVE }, description = "getPurchasedTicketsForEvent()")
+	@Test(description = "getPurchasedTicketsForEvent()")
 	public void getPurchasedTicketsForEventTest() {
-		Ticket firstTestTicket = new Ticket(user, event, 1, false); 
-		Ticket secondTestTicket = new Ticket(user, event, 2, false);
+		Ticket firstTestTicket = new Ticket(testUser, testEvent, 1, false); 
+		Ticket secondTestTicket = new Ticket(testUser, testEvent, 2, false);
 		
 		Set<Ticket> tickets = new HashSet<>();
 		tickets.add(firstTestTicket);
 		tickets.add(secondTestTicket);
 		
 		bookingService.bookTickets(tickets);
-		Set<Ticket> ticketsActual = bookingService.getPurchasedTicketsForEvent(event, TEST_DATE_TIME);
+		Set<Ticket> ticketsActual = bookingService.getPurchasedTicketsForEvent(testEvent, TEST_DATE_TIME);
 		Assert.assertEquals(ticketsActual, tickets);
 	}
 

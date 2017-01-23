@@ -1,4 +1,4 @@
-package com.epam.spring.core;
+package com.epam.spring.core.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,9 +7,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
-import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -19,13 +21,14 @@ import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.service.IAuditoriumService;
 
 @ContextConfiguration(classes = { AppConfig.class }, loader = AnnotationConfigContextLoader.class)
-public class AuditoriumServiceTest extends AbstractTestNGSpringContextTests {
+@TransactionConfiguration
+public class AuditoriumServiceTest extends AbstractTransactionalTestNGSpringContextTests {
 	
 	@Autowired
 	private IAuditoriumService auditoriumService;
 	
 	//expected bunch of auditorium
-	private Collection<Auditorium> expectedBunchOfAuditoriums;
+	private List<Auditorium> expectedBunchOfAuditoriums;
 	
 	//expected auditorium
 	private Auditorium smallAuditorium;
@@ -61,14 +64,21 @@ public class AuditoriumServiceTest extends AbstractTestNGSpringContextTests {
 		expectedBunchOfAuditoriums.add(largeAuditorium);
 	}
 	
-	@Test(description = "getAll()")
-	public void getAllAuditoriumTest() {
-		Collection<Auditorium> bunchOfAuditorium = auditoriumService.getAll();
-		Assert.assertTrue(bunchOfAuditorium.size() == expectedBunchOfAuditoriums.size());		
+	@Rollback(false)
+	@Test(description = "save()")
+	public void saveAuditoriumsTest() {
+		Auditorium persistedSmallAuditoriums = auditoriumService.save(expectedBunchOfAuditoriums.get(0));
+		Auditorium persistedLargeAuditoriums = auditoriumService.save(expectedBunchOfAuditoriums.get(1));
+
+		Assert.assertEquals(persistedSmallAuditoriums.getName(), smallAuditorium.getName());	
+		Assert.assertEquals(persistedLargeAuditoriums.getName(), largeAuditorium.getName());
 	}
 	
-	@Test(description = "getByName()")
-	public void getByName() {
+	@Test(description = "getByName(), getAll()", dependsOnMethods  = "saveAuditoriumsTest")
+	public void getAuditoriumTest() {
+		Collection<Auditorium> bunchOfAuditorium = auditoriumService.getAll();
+		Assert.assertTrue(bunchOfAuditorium.size() == expectedBunchOfAuditoriums.size());	
+		
 		Auditorium auditoriumSmallActual = auditoriumService.getByName(NAME_OF_SMALL_AUDITORIUM);
 		Auditorium auditoriumLargeActual = auditoriumService.getByName(NAME_OF_LARGE_AUDITORIUM);
 		Assert.assertEquals(auditoriumSmallActual, smallAuditorium);

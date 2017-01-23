@@ -32,5 +32,5 @@ public class AppConfig {
 		bunchOfDiscounts.add(new LuckyDiscountStrategyImpl());
 		return bunchOfDiscounts;
 	}
-
+	
 }
