@@ -1,5 +1,6 @@
 package com.epam.spring.core.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ import javax.persistence.Transient;
  */
 @Entity
 @Table(name = "ticket")
-public class Ticket extends DomainObject {
+public class Ticket extends DomainObject implements Comparable<Ticket>, Serializable {
 
     /**
 	 * 
@@ -52,11 +53,15 @@ public class Ticket extends DomainObject {
     public Ticket() {
     }
     
-	public Ticket(User user, Event event, long seat, boolean isVipSeat) {
-        //this.user = user;
+	public Ticket(User user, Event event, long seat) {
+        this.user = user;
         this.event = event;
         this.seat = seat;
-        this.isVipSeat = isVipSeat;
+    }
+	
+	public Ticket(User user, Event event, Date date, long seat) {
+		this(user, event, seat);
+		this.date = date;
     }
 
     public boolean isVipSeat() {
@@ -64,7 +69,7 @@ public class Ticket extends DomainObject {
     }
     
     public User getUser() {
-        return null;
+        return user;
     }
 
     public Event getEvent() {
@@ -101,7 +106,7 @@ public class Ticket extends DomainObject {
 	
 	@Override
 	public int hashCode() {
-		return Objects.hash(getId(), auditorium, date, event, seat);
+		return Objects.hash(getId(), user, event, auditorium, date, seat);
 	}
 
 	@Override
@@ -133,9 +138,23 @@ public class Ticket extends DomainObject {
 				return false;
 		} else if (!event.equals(other.event))
 			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
 		if (seat != other.seat)
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Ticket o) {			  
+		int result = this.date.compareTo(o.getDate());
+		if (result == 0) {
+		        result = new Long(seat).compareTo(o.getSeat());
+		}
+		return result;
 	}
 
 }

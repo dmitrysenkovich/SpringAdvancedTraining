@@ -1,5 +1,7 @@
 package com.epam.spring.core.dao.statistics.impl;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,14 +30,19 @@ public class CounterAspectDaoImpl implements ICounterAspectDao {
 	
 	@Override
 	public CounterStatisticsEvent getStatisticsById(Long id) {
-		CounterStatisticsEvent statiscticsEvent = null;
+		List<CounterStatisticsEvent> statiscticsEvent = null;
 		try {
-			statiscticsEvent = jdbcTemplate.queryForObject(SELECT_EVENT_STATISTICS_BY_ID, new Object[] {id}, new CounterStatisticsEventMapper());
+			statiscticsEvent = jdbcTemplate.query(SELECT_EVENT_STATISTICS_BY_ID, new Object[] {id}, new CounterStatisticsEventMapper());
 		} catch(DataAccessException e) {
 			String errorMsg = String.format("Unable to obtain event statistics from DB by id: ", id);
 			LOGGER.error(errorMsg, e);
 		}
-		return statiscticsEvent;
+		
+		if (!statiscticsEvent.isEmpty()) {
+			statiscticsEvent.get(0);
+		}
+		
+		return null;
 	}
 
 	@Override

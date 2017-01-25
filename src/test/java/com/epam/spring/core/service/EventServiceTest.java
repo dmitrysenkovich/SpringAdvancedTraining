@@ -41,7 +41,6 @@ public class EventServiceTest extends AbstractTransactionalTestNGSpringContextTe
 	private Event testEvent;
 	private Auditorium testAuditorium;
 	
-	
 	@BeforeClass
 	public void initAuditoriums() {
 		testAuditorium = new Auditorium();
@@ -60,8 +59,8 @@ public class EventServiceTest extends AbstractTransactionalTestNGSpringContextTe
 		testEvent.assignAuditorium(TEST_EVENT_DATE_TIME, testAuditorium);
 	}
 	
-	@Rollback(false)
-	@Test()
+	@Rollback
+	@Test
 	public void eventServiceGetByNameTest() {			
 		Event persistedEvent = eventService.save(testEvent);
 		Assert.assertTrue(eventService.getAll().size() == 1);

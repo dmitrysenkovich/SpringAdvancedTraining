@@ -1,11 +1,15 @@
 package com.epam.spring.core.domain;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -21,7 +25,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
  */
 @Entity
 @Table(name = "user")
-public class User extends DomainObject {
+public class User extends DomainObject implements Serializable {
 
 	/**
 	 * 
@@ -30,17 +34,22 @@ public class User extends DomainObject {
 	
 	@Column(name = "first_name")
 	private String firstName;
+	
 	@Column(name = "last_name")
 	private String lastName;
+	
 	@Column(name = "email")
     private String email;
+	
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "birthday")
 	private Date birthday;	
-	@OneToMany
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
-	private Set<Ticket> tickets;
+	private Set<Ticket> tickets = new HashSet<>();
+	
 	@Transient
     private boolean isRegistered;
 	

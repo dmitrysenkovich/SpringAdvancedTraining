@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.support.AnnotationConfigContextLoader;
 import org.springframework.test.context.testng.AbstractTransactionalTestNGSpringContextTests;
@@ -21,7 +20,7 @@ import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.service.IAuditoriumService;
 
 @ContextConfiguration(classes = { AppConfig.class }, loader = AnnotationConfigContextLoader.class)
-@TransactionConfiguration
+@TransactionConfiguration(defaultRollback = false)
 public class AuditoriumServiceTest extends AbstractTransactionalTestNGSpringContextTests {
 	
 	@Autowired
@@ -64,7 +63,6 @@ public class AuditoriumServiceTest extends AbstractTransactionalTestNGSpringCont
 		expectedBunchOfAuditoriums.add(largeAuditorium);
 	}
 	
-	@Rollback(false)
 	@Test(description = "save()")
 	public void saveAuditoriumsTest() {
 		Auditorium persistedSmallAuditoriums = auditoriumService.save(expectedBunchOfAuditoriums.get(0));

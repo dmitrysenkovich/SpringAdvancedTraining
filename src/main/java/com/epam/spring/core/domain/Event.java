@@ -2,6 +2,7 @@ package com.epam.spring.core.domain;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -49,8 +50,8 @@ public class Event extends DomainObject {
 	@MapKeyTemporal(TemporalType.TIMESTAMP)
 	private Map<Date, Auditorium> auditoriums = new HashMap<>();
     
-	@OneToMany(mappedBy = "event")
-	private Set<Ticket> tickets;
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Ticket> tickets = new HashSet<>();
 
 	public void assignAuditorium(Date dateTime, Auditorium auditorium) {
     	auditoriums.put(dateTime, auditorium);

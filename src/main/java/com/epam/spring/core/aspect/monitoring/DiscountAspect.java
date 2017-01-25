@@ -43,7 +43,7 @@ public class DiscountAspect {
     	  		DiscountStatistics discountStatisticsNew = new DiscountStatistics();
     	  		discountStatisticsNew.setId(userId);
     	  		updateData(discountStr, discountStatisticsNew);
-    	  		discountAspectDao.updateStatistics(discountStatisticsNew);	
+    	  		discountAspectDao.insertStatistics(discountStatisticsNew);	
     	  	}
     	}
     }

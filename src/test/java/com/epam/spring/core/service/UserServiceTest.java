@@ -29,8 +29,8 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
 	
 	@Autowired
 	private IUserService userService;
+
 	private User expectedUser;
-	
 	
 	@BeforeClass
 	public void initTest() {
@@ -41,7 +41,7 @@ public class UserServiceTest extends AbstractTransactionalTestNGSpringContextTes
 		expectedUser.setBirthday(TEST_USER_BIRTHDAY);
 	}
 	
-	@Rollback(false)
+	@Rollback
 	@Test(description = "save() and getById()")
 	public void userServiceSaveTest(){
 		User persistedUser = userService.save(expectedUser);		
