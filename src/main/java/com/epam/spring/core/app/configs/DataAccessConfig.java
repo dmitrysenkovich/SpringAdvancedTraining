@@ -1,4 +1,4 @@
-package com.epam.spring.core.app;
+package com.epam.spring.core.app.configs;
 
 import java.util.Properties;
 

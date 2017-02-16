@@ -10,6 +10,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
+import com.epam.spring.core.app.configs.DataAccessConfig;
 import com.epam.spring.core.service.discount.IDiscount;
 import com.epam.spring.core.service.discount.impl.BirthdayDiscountImpl;
 import com.epam.spring.core.service.discount.impl.LuckyDiscountStrategyImpl;

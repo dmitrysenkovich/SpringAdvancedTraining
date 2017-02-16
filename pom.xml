@@ -5,13 +5,21 @@
   <artifactId>managing-movie-theater-app</artifactId>
   <packaging>war</packaging>
   <version>0.0.1-SNAPSHOT</version>
-  <name>managing-movie-theater-app Maven Webapp</name>
+  <name>managing-movie-theater-app</name>
   <url>http://maven.apache.org</url>
 
   
   <build>
       <finalName>managing-movie-theater-app</finalName>
         <plugins>
+         	<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-war-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+                <failOnMissingWebXml>false</failOnMissingWebXml>
+            </configuration>
+        	</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -58,12 +66,12 @@
             </plugin>
             
 			<!-- embedded Jetty server, for testing -->
-			<plugin>
+			 <plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<version>9.2.3.v20140905</version>
+				<version>9.2.11.v20150529</version>
 				<configuration>
-				<scanIntervalSeconds>10</scanIntervalSeconds>
+				    <scanIntervalSeconds>10</scanIntervalSeconds>
 					<webApp>
 						<contextPath>/</contextPath>
 					</webApp>
@@ -94,6 +102,11 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+        	<groupId>org.springframework</groupId>
+        	<artifactId>spring-context-support</artifactId>
+        	<version>${spring.version}</version>
+    	</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
@@ -195,6 +208,18 @@
     		<groupId>org.apache.commons</groupId>
     		<artifactId>commons-collections4</artifactId>
     		<version>4.0</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>commons-lang</groupId>
+    		<artifactId>commons-lang</artifactId>
+    		<version>2.6</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.freemarker</groupId>
+    		<artifactId>freemarker</artifactId>
+    		<version>2.3.23</version>
 		</dependency>
 		
 	</dependencies>
