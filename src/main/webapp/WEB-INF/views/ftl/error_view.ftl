@@ -4,9 +4,8 @@
 <body>
 <div id="header">
 <H2>
-	Spring MVC
+Unknown error occurred, please contact site support
 </H2>
-
 <div id="content">
 
 <h3>Message:</h3>

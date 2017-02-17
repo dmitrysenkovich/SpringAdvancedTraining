@@ -19,35 +19,34 @@ import com.epam.spring.core.service.IEventService;
 public class EventController {
 	
 	private static final String EVENTS_VIEW = "event/event_view";
-	private static final String EVENTS_ACTION_VIEW = "event/event_action_view";
+	private static final String EVENTS_ACTION_VIEW = "action_view";
 			
 	@Autowired
 	private IEventService eventService;
-	
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getAllEvents() {
-		Collection<Event> events = eventService.getAll();
 		
-		ModelAndView eventsView = new ModelAndView(EVENTS_VIEW);
-		eventsView.addObject("events", events);
-		return eventsView;
-	}
-	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public ModelAndView getEventById(@RequestParam long id) {
 		Event event = eventService.getById(id);
 		
 		ModelAndView eventsView = new ModelAndView(EVENTS_VIEW);
+		eventsView.addObject("entity", "event");
 		eventsView.addObject("events", Arrays.asList(event));
 		return eventsView;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getEventByName(@RequestParam String  name) {
-		Event event = eventService.getByName(name);
+	public ModelAndView getEvents(@RequestParam(required = false) String  name) {
+		Collection<Event> events;
+		if (null != name) {
+			Event event = eventService.getByName(name);
+			events = Arrays.asList(event);
+		} else {
+			events = eventService.getAll();
+		}
 		
 		ModelAndView eventsView = new ModelAndView(EVENTS_VIEW);
-		eventsView.addObject("events", Arrays.asList(event));
+		eventsView.addObject("entity", "event");
+		eventsView.addObject("events", events);
 		return eventsView;
 	}
 	
@@ -56,6 +55,7 @@ public class EventController {
 		eventService.remove(event);
 		
 		ModelAndView eventsView = new ModelAndView(EVENTS_ACTION_VIEW);
+		eventsView.addObject("entity", "event");
 		eventsView.addObject("action", "removing");
 		return eventsView;
 	}
@@ -65,6 +65,7 @@ public class EventController {
 		eventService.save(event);
 		
 		ModelAndView eventsView = new ModelAndView(EVENTS_ACTION_VIEW);
+		eventsView.addObject("entity", "event");
 		eventsView.addObject("action", "persisting");
 		return eventsView;
 	}

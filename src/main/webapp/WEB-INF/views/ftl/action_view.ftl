@@ -9,7 +9,7 @@ ${entity}
 <div id="content">
 
 <h3>Message:</h3>
-Tickets price: ${ticketPrice}<br><br>
+Action: ${action}<br><br>
 </div>  
 </body>
 </html>

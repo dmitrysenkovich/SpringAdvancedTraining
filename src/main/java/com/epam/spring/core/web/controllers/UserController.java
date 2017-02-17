@@ -18,55 +18,56 @@ import com.epam.spring.core.service.IUserService;
 @RequestMapping("/user")
 public class UserController {
 
-	private static final String USERS_VIEW = "user/users_view";
-	private static final String USER_ACTION_VIEW = "user/user_action_view";
+	private static final String USERS_VIEW = "user/user_view";
+	private static final String USER_ACTION_VIEW = "action_view";
 
 	@Autowired
 	private IUserService userService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getUserByEmail(@RequestParam() String email) {
-		User user = userService.getUserByEmail(email);
+	public ModelAndView getUserByEmail(@RequestParam(required = false) String email) {
+		Collection<User> users;
+		if (null != email) {
+			User user = userService.getUserByEmail(email);
+			users = Arrays.asList(user);
+		} else {
+			users = userService.getAll();
+		}
 		
 		ModelAndView usersView = new ModelAndView(USERS_VIEW);
-		usersView.addObject("users", Arrays.asList(user));
+		usersView.addObject("entity", "user");
+		usersView.addObject("users", users);
 		return usersView;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getUserById(@RequestParam("id") long id) {
+	public ModelAndView getUserById(@RequestParam long id) {
 		User user = userService.getById(id);
 		
 		ModelAndView usersView = new ModelAndView(USERS_VIEW);
+		usersView.addObject("entity", "user");
 		usersView.addObject("users", Arrays.asList(user));
 		return usersView;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getAllUsers() {
-		Collection<User> allUsers = userService.getAll();
-		
-		ModelAndView allUsersView = new ModelAndView(USERS_VIEW);
-		allUsersView.addObject("users", allUsers);
-		return allUsersView;
-	}
-	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ModelAndView removeAuditorium(@RequestParam() long id) {
+	public ModelAndView removeUser(@RequestParam long id) {
 		User userToDelete = new User();
 		userToDelete.setId(id);
 		userService.remove(userToDelete);
 		
 		ModelAndView actionView = new ModelAndView(USER_ACTION_VIEW);
+		actionView.addObject("entity", "user");
 		actionView.addObject("action", "removing");
 		return actionView;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView saveUser(@RequestBody() User auditoriumToSave) {
+	public ModelAndView saveUser(@RequestBody User auditoriumToSave) {
 		userService.save(auditoriumToSave);
 		
 		ModelAndView actionView = new ModelAndView(USER_ACTION_VIEW);
+		actionView.addObject("entity", "user");
 		actionView.addObject("action", "persisting");
 		return actionView;
 	}

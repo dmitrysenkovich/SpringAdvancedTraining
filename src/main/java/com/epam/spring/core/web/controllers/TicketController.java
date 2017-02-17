@@ -5,7 +5,10 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +26,8 @@ import com.epam.spring.core.web.beans.UserEventBean;
 public class TicketController {
 	
 	private static final String TICKETS_VIEW = "ticket/tickets_view";
-	private static final String TICKET_ACTION_VIEW = "ticket/ticket_action_view";
+	private static final String TICKET_ACTION_VIEW = "action_view";
 	private static final String TICKET_PRICE_VIEW = "ticket/ticket_price_view";
-
 
 	@Autowired
 	private IBookingService bookingService;	
@@ -35,27 +37,51 @@ public class TicketController {
 		bookingService.bookTickets(tickets);
 
 		ModelAndView actionView = new ModelAndView(TICKET_ACTION_VIEW);
+		actionView.addObject("entity", "tickets");
 		actionView.addObject("action", "booking");
 		return actionView;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getPurchasedTicketsForEvent(@RequestParam long eventId, @RequestParam Date date) {
+	public ModelAndView getPurchasedTicketsForEvent(
+			@RequestParam long eventId, 
+			@RequestParam @DateTimeFormat(iso = ISO.DATE_TIME) String date) 
+	{
 		Event event = new Event();
 		event.setId(eventId);
-
-		Set<Ticket> purchasedTickets = bookingService.getPurchasedTicketsForEvent(event, date);
+		Set<Ticket> purchasedTickets = bookingService.getPurchasedTicketsForEvent(event, DateTime.parse(date).toDate());
 
 		ModelAndView actionView = new ModelAndView(TICKETS_VIEW);
+		actionView.addObject("entity", "tickets");
+		actionView.addObject("tickets", purchasedTickets);
+		return actionView;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, headers = "Accept = application/pdf")
+	public ModelAndView getPurchasedTicketsForEventPdf(
+			@RequestParam long eventId, 
+			@RequestParam @DateTimeFormat(iso = ISO.DATE_TIME) String date) 
+	{
+		Event event = new Event();
+		event.setId(eventId);
+		Set<Ticket> purchasedTickets = bookingService.getPurchasedTicketsForEvent(event, DateTime.parse(date).toDate());
+
+		ModelAndView actionView = new ModelAndView(TICKETS_VIEW);
+		actionView.addObject("entity", "tickets");
 		actionView.addObject("tickets", purchasedTickets);
 		return actionView;
 	}
 	
 	@RequestMapping(value = "/price", method = RequestMethod.POST)
-	public ModelAndView getTicketsPrice(@RequestBody UserEventBean userEventBean, @RequestParam Date dateTime, @RequestParam(value="seat") Collection<Long> seats) {
+	public ModelAndView getTicketsPrice(
+			@RequestBody UserEventBean userEventBean, 
+			@RequestParam Date dateTime, 
+			@RequestParam(value="seat") Collection<Long> seats) 
+	{
 		double ticketPrice = bookingService.getTicketsPrice(userEventBean.getEvent(), dateTime, userEventBean.getUser(), new HashSet<Long>(seats));
 		
 		ModelAndView ticketPriceView = new ModelAndView(TICKET_PRICE_VIEW);
+		ticketPriceView.addObject("entity", "tickets");
 		ticketPriceView.addObject("ticketPrice", ticketPrice);
 		return ticketPriceView;
 	}

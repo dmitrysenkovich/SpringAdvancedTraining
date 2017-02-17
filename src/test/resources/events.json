@@ -1,0 +1,10 @@
+[  
+   {  
+      "name":"epam",
+      "basePrice":10000
+   },
+   {  
+      "name":"Oleg's company",
+      "basePrice":10000000
+   }
+]

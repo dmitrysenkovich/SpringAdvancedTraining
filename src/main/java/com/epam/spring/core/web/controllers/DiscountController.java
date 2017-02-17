@@ -1,8 +1,9 @@
 package com.epam.spring.core.web.controllers;
 
-import java.util.Date;
-
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +23,17 @@ public class DiscountController {
 	@Autowired
 	private IDiscountService discountService;
 	
-	@RequestMapping(method = RequestMethod.GET)
-	private ModelAndView getDiscount(@RequestBody UserEventBean userEventBean, @RequestParam String airDateTime, @RequestParam long number) {
-		double discount = discountService.getDiscount(userEventBean.getUser(), userEventBean.getEvent(), new Date(), number);
-		
+	@RequestMapping(method = RequestMethod.POST)
+	private ModelAndView getDiscount(
+			@RequestBody(required = false) UserEventBean userEventBean, 
+			@RequestParam(required = false) @DateTimeFormat(iso = ISO.DATE_TIME) String airDateTime, 
+			@RequestParam(required = false) long number) 
+	{
+		DateTime date = DateTime.parse(airDateTime);
+		double discount = discountService.getDiscount(userEventBean.getUser(), userEventBean.getEvent(), date.toDate(), number);
+
 		ModelAndView discountView = new ModelAndView(DISCOUNT_VIEW);
+		discountView.addObject("entity", "discount");
 		discountView.addObject("discount", discount);
 		return discountView;
 	}

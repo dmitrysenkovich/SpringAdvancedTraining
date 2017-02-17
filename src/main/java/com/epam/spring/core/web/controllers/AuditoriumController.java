@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,54 +20,55 @@ import com.epam.spring.core.service.IAuditoriumService;
 public class AuditoriumController {
 	
 	private static final String AUDITORIUMS_VIEW = "auditorium/auditoriums_view";
-	private static final String AUDITORIUM_ACTION_VIEW = "auditorium/auditorium_action_view";
+	private static final String AUDITORIUM_ACTION_VIEW = "action_view";
 
 	@Autowired
 	private IAuditoriumService auditoriumService;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getAuditoriumByName(@RequestParam("name") String auditoriumName) {
-		Auditorium auditorium = auditoriumService.getByName(auditoriumName);
+	public ModelAndView getEvents(@RequestParam(required = false, value = "name") String auditoriumName) {
+		Collection<Auditorium> allAuditoriums = null;
+		if (null != auditoriumName) {
+			Auditorium auditorium = auditoriumService.getByName(auditoriumName);	
+			allAuditoriums = Arrays.asList(auditorium);
+		} else {
+			allAuditoriums = auditoriumService.getAll();			
+		}
 		
 		ModelAndView auditoriumsView = new ModelAndView(AUDITORIUMS_VIEW);
-		auditoriumsView.addObject("auditoriums", Arrays.asList(auditorium));
+		auditoriumsView.addObject("entity", "auditoriums");
+		auditoriumsView.addObject("auditoriums", allAuditoriums);
 		return auditoriumsView;
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ModelAndView getAllAuditorium(@RequestParam("id") long id) {
-		Auditorium auditorium = auditoriumService.getById(id);
+	public ModelAndView getEventById(@PathVariable long id) {
+		Auditorium auditorium = auditoriumService.getById(id);	
 		
 		ModelAndView auditoriumsView = new ModelAndView(AUDITORIUMS_VIEW);
+		auditoriumsView.addObject("entity", "auditorium");
 		auditoriumsView.addObject("auditoriums", Arrays.asList(auditorium));
 		return auditoriumsView;
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public ModelAndView getAllAuditoriums() {
-		Collection<Auditorium> allAuditoriums = auditoriumService.getAll();
-		
-		ModelAndView allAuditoriumsView = new ModelAndView(AUDITORIUMS_VIEW);
-		allAuditoriumsView.addObject("auditoriums", allAuditoriums);
-		return allAuditoriumsView;
-	}
-	
 	@RequestMapping(method = RequestMethod.DELETE)
-	public ModelAndView removeAuditorium(@RequestParam("id") long id) {
+	public ModelAndView removeAuditorium(@RequestParam long id) {
 		Auditorium auditoriumToDelete = new Auditorium();
 		auditoriumToDelete.setId(id);
 		auditoriumService.remove(auditoriumToDelete);
 		
 		ModelAndView actionView = new ModelAndView(AUDITORIUM_ACTION_VIEW);
+		actionView.addObject("entity", "auditorium");
 		actionView.addObject("action", "removing");
 		return actionView;
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView saveAuditorium(@RequestBody() Auditorium auditoriumToSave) {
+	public ModelAndView saveAuditorium(@RequestBody Auditorium auditoriumToSave) {
 		auditoriumService.save(auditoriumToSave);
 		
 		ModelAndView actionView = new ModelAndView(AUDITORIUM_ACTION_VIEW);
+		actionView.addObject("entity", "auditorium");
 		actionView.addObject("action", "persisting");
 		return actionView;
 	}
