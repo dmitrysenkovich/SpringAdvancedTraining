@@ -1,9 +1,11 @@
 package com.epam.spring.core.service;
 
+import com.epam.spring.core.domain.Event;
+
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.epam.spring.core.domain.Event;
 
 /**
  * @author alehstruneuski
@@ -18,6 +20,8 @@ public interface IEventService extends IAbstractDomainObjectService<Event> {
      * @return found event or <code>null</code>
      */
     public @Nullable Event getByName(@Nonnull String name);
+
+    void save(@Nonnull List<Event> objects);
 
     /*
      * Finding all events that air on specified date range

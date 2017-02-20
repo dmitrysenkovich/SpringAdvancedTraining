@@ -1,8 +1,9 @@
 package com.epam.spring.core;
 
-import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
 import com.epam.spring.core.app.AppConfig;
+import com.epam.spring.core.web.WebConfig;
+
+import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class Application extends AbstractAnnotationConfigDispatcherServletInitializer {
 
@@ -13,7 +14,7 @@ public class Application extends AbstractAnnotationConfigDispatcherServletInitia
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] { AppConfig.class };
+		return new Class<?>[] { WebConfig.class };
 	}
 
 	@Override

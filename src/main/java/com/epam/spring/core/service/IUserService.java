@@ -1,9 +1,11 @@
 package com.epam.spring.core.service;
 
+import com.epam.spring.core.domain.User;
+
+import java.util.List;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import com.epam.spring.core.domain.User;
 
 /**
  * @author alehstruneuski
@@ -19,4 +21,5 @@ public interface IUserService extends IAbstractDomainObjectService<User> {
      */
     public @Nullable User getUserByEmail(@Nonnull String email);
 
+    void save(@Nonnull List<User> objects);
 }

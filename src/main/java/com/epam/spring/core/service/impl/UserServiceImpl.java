@@ -1,16 +1,16 @@
 package com.epam.spring.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.epam.spring.core.dao.UserRepository;
+import com.epam.spring.core.domain.User;
+import com.epam.spring.core.service.IUserService;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.epam.spring.core.dao.UserRepository;
-import com.epam.spring.core.domain.User;
-import com.epam.spring.core.service.IUserService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author alehstruneuski
@@ -24,6 +24,11 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User save(User object) {
 		return userRepository.save(object);
+	}
+
+	@Override
+	public void save(List<User> objects) {
+		userRepository.save(objects);
 	}
 
 	@Override

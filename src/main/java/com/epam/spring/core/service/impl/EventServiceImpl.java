@@ -1,16 +1,16 @@
 package com.epam.spring.core.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import com.epam.spring.core.dao.EventRepository;
+import com.epam.spring.core.domain.Event;
+import com.epam.spring.core.service.IEventService;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.epam.spring.core.dao.EventRepository;
-import com.epam.spring.core.domain.Event;
-import com.epam.spring.core.service.IEventService;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author alehstruneuski
@@ -24,6 +24,11 @@ public class EventServiceImpl implements IEventService {
 	@Override
 	public Event save(Event object) {
 		return eventRepository.save(object);
+	}
+
+	@Override
+	public void save(List<Event> objects) {
+		eventRepository.save(objects);
 	}
 
 	@Override
@@ -48,5 +53,4 @@ public class EventServiceImpl implements IEventService {
 	public Event getByName(String name) {
 		return eventRepository.findByName(name);
 	}
-
 }

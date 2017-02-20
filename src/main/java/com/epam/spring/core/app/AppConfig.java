@@ -1,7 +1,8 @@
 package com.epam.spring.core.app;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.epam.spring.core.service.discount.IDiscount;
+import com.epam.spring.core.service.discount.impl.BirthdayDiscountImpl;
+import com.epam.spring.core.service.discount.impl.LuckyDiscountStrategyImpl;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,16 +11,14 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
-import com.epam.spring.core.service.discount.IDiscount;
-import com.epam.spring.core.service.discount.impl.BirthdayDiscountImpl;
-import com.epam.spring.core.service.discount.impl.LuckyDiscountStrategyImpl;
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @ComponentScan("com.epam.spring.core")
 @Import(DataAccessConfig.class)
 @EnableAspectJAutoProxy
 public class AppConfig {
-	  
 	@Bean
 	public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholder() {
 	    return new PropertySourcesPlaceholderConfigurer();  
@@ -32,5 +31,4 @@ public class AppConfig {
 		bunchOfDiscounts.add(new LuckyDiscountStrategyImpl());
 		return bunchOfDiscounts;
 	}
-	
 }

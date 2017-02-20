@@ -1,9 +1,5 @@
 package com.epam.spring.core.app;
 
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +12,10 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import java.util.Properties;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,8 +40,8 @@ public class DataAccessConfig {
 	    DriverManagerDataSource dataSource = new DriverManagerDataSource();
 	    dataSource.setDriverClassName(env.getRequiredProperty(PROP_NAME_DATABASE_DRIVER));
 	    dataSource.setUrl(env.getRequiredProperty(PROP_NAME_DATABASE_URL));
-	    dataSource.setUsername(env.getRequiredProperty(PROP_NAME_DATABASE_PASSWORD));
-	    dataSource.setPassword(env.getRequiredProperty(PROP_NAME_DATABASE_USERNAME));
+	    dataSource.setUsername(env.getRequiredProperty(PROP_NAME_DATABASE_USERNAME));
+	    dataSource.setPassword(env.getRequiredProperty(PROP_NAME_DATABASE_PASSWORD));
 	    return dataSource;
 	}
 	
