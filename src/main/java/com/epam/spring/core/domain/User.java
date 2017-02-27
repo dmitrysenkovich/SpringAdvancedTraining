@@ -1,5 +1,8 @@
 package com.epam.spring.core.domain;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
@@ -16,9 +19,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
-
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
  * @author alehstruneuski
@@ -44,7 +44,16 @@ public class User extends DomainObject implements Serializable {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "birthday")
-	private Date birthday;	
+	private Date birthday;
+
+	@Column(name = "user_name")
+	private String userName;
+
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "roles")
+	private String roles;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -103,11 +112,34 @@ public class User extends DomainObject implements Serializable {
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
 	}
-	
-	
-	 @Override
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getRoles() {
+		return roles;
+	}
+
+	public void setRoles(String roles) {
+		this.roles = roles;
+	}
+
+	@Override
 	public int hashCode() {
-		 return Objects.hash(getId(), firstName, lastName, email, birthday);
+		 return Objects.hash(getId(), firstName, lastName, email, birthday, userName, password, roles);
 	}
 
 	@Override
@@ -143,6 +175,21 @@ public class User extends DomainObject implements Serializable {
 			if (other.lastName != null)
 				return false;
 		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (userName == null) {
+			if (other.userName != null)
+				return false;
+		} else if (!userName.equals(other.userName))
+			return false;
+		if (password == null) {
+			if (other.password != null)
+				return false;
+		} else if (!password.equals(other.password))
+			return false;
+		if (roles == null) {
+			if (other.roles != null)
+				return false;
+		} else if (!roles.equals(other.roles))
 			return false;
 		return true;
 	}

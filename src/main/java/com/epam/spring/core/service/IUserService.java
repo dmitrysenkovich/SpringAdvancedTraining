@@ -21,5 +21,7 @@ public interface IUserService extends IAbstractDomainObjectService<User> {
      */
     public @Nullable User getUserByEmail(@Nonnull String email);
 
+    public @Nullable User getUserByUserName(@Nonnull String userName);
+
     void save(@Nonnull List<User> objects);
 }

@@ -1,0 +1,2 @@
+insert into user(first_name, last_name, email, birthday, user_name, password, roles) values("Admin", "Admin", "admin@gmail.com", "1995-01-01", "admin", "$2a$10$4o4sGK9QSqR3xYzJR1Vy6e3paWtJx0m.388edwdj70aovt6FEaCAS", "REGISTERED_USER");
+insert into user(first_name, last_name, email, birthday, user_name, password, roles) values("Invalid", "Invalid", "invalid@gmail.com", "1995-01-01", "invalid", "$2a$10$DAdqf7fqaNYTvvaeuYWvyOTDwrI5Xkwm7zaxwHQ7Zo1Qhcnnouuo2", "INVALID_USER");

@@ -8,8 +8,8 @@ import com.epam.spring.core.service.IEventService;
 import com.epam.spring.core.service.IUserService;
 import com.epam.spring.core.web.model.TicketInfo;
 import com.epam.spring.core.web.pdf.PdfCreator;
-import com.sun.deploy.util.StringUtils;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
