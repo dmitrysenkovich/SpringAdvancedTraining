@@ -52,7 +52,7 @@ public class BatchLoadController {
             LOGGER.info("Read users json data:" + usersInString);
 
             List<User> users = objectMapper.readValue(usersInString, new TypeReference<List<User>>(){});
-            userService.save(users);
+            users.forEach(userService::save);
             LOGGER.info("Saved users");
         }
         if (eventsData.getSize() != 0) {

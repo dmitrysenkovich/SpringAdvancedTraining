@@ -5,6 +5,7 @@ import com.epam.spring.core.domain.Ticket;
 import com.epam.spring.core.domain.User;
 import com.epam.spring.core.service.IBookingService;
 import com.epam.spring.core.service.IEventService;
+import com.epam.spring.core.service.IUserAccountService;
 import com.epam.spring.core.service.IUserService;
 import com.epam.spring.core.web.model.TicketInfo;
 import com.epam.spring.core.web.pdf.PdfCreator;
@@ -36,15 +37,17 @@ public class BookingController {
     private final IBookingService bookingService;
     private final IEventService eventService;
     private final IUserService userService;
+    private final IUserAccountService userAccountService;
 
     private final PdfCreator pdfCreator;
 
     @Autowired
-    public BookingController(IBookingService bookingService, IEventService eventService,
-                             IUserService userService, PdfCreator pdfCreator) {
+    public BookingController(IBookingService bookingService, IEventService eventService, IUserService userService,
+                             IUserAccountService userAccountService, PdfCreator pdfCreator) {
         this.bookingService = bookingService;
         this.eventService = eventService;
         this.userService = userService;
+        this.userAccountService = userAccountService;
         this.pdfCreator = pdfCreator;
         LOGGER.info("Initializing is completed");
     }
@@ -109,5 +112,14 @@ public class BookingController {
 
         response.getOutputStream().write(pdfInBytes);
         response.getOutputStream().flush();
+    }
+
+    @RequestMapping(value = "/refill", method = RequestMethod.PUT)
+    public void refill(@RequestParam Long userId, @RequestParam Double amount) {
+        LOGGER.info("refill PUT request");
+        LOGGER.info("userId: " + userId);
+        LOGGER.info("amount: " + amount);
+
+        userAccountService.refill(userId, amount);
     }
 }

@@ -15,6 +15,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -58,6 +59,10 @@ public class User extends DomainObject implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private Set<Ticket> tickets = new HashSet<>();
+
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "user_account_fk", referencedColumnName = "id")
+	private UserAccount userAccount;
 	
 	@Transient
     private boolean isRegistered;
@@ -135,6 +140,14 @@ public class User extends DomainObject implements Serializable {
 
 	public void setRoles(String roles) {
 		this.roles = roles;
+	}
+
+	public UserAccount getUserAccount() {
+		return userAccount;
+	}
+
+	public void setUserAccount(UserAccount userAccount) {
+		this.userAccount = userAccount;
 	}
 
 	@Override

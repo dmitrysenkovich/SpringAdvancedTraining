@@ -36,7 +36,9 @@ public class Event extends DomainObject {
 	private String name;
 	@Column(name = "base_price")
     private double basePrice;
-	
+	@Column(name = "ticket_price")
+	private double ticketPrice;
+
 	@Column(name = "rating")
 	@Enumerated(EnumType.STRING)
     private EventRating rating;
@@ -77,7 +79,15 @@ public class Event extends DomainObject {
         this.basePrice = basePrice;
     }
 
-    public EventRating getRating() {
+	public double getTicketPrice() {
+		return ticketPrice;
+	}
+
+	public void setTicketPrice(double ticketPrice) {
+		this.ticketPrice = ticketPrice;
+	}
+
+	public EventRating getRating() {
         return rating;
     }
 

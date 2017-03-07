@@ -21,7 +21,7 @@ public class CounterStatisticsEvent extends DomainObject {
 		this.numberOfAccessByPrice = 0l;
 		this.numberOfbookedTickets = 0l;
 	}
-	
+
 	public Long getNumberOfAccessByName() {
 		return numberOfAccessByName;
 	}

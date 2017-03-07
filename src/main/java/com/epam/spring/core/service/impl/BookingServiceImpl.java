@@ -1,22 +1,26 @@
 package com.epam.spring.core.service.impl;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.epam.spring.core.domain.Auditorium;
 import com.epam.spring.core.domain.Event;
 import com.epam.spring.core.domain.EventRating;
 import com.epam.spring.core.domain.Ticket;
 import com.epam.spring.core.domain.User;
+import com.epam.spring.core.domain.UserAccount;
 import com.epam.spring.core.service.IAuditoriumService;
 import com.epam.spring.core.service.IBookingService;
 import com.epam.spring.core.service.IDiscountService;
 import com.epam.spring.core.service.IEventService;
+import com.epam.spring.core.service.IUserAccountService;
 import com.epam.spring.core.service.IUserService;
+import com.epam.spring.core.service.exception.NotEnoughMoneyException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author alehstruneuski
@@ -35,6 +39,8 @@ public class BookingServiceImpl implements IBookingService {
 	private IEventService eventService;
 	@Autowired
 	private IUserService userService;
+	@Autowired
+	private IUserAccountService userAccountService;
 	
 	@Override
 	public double getTicketsPrice(Event event, Date dateTime, User user, Set<Long> seats) {	
@@ -62,7 +68,8 @@ public class BookingServiceImpl implements IBookingService {
 	}
 
 	@Override
-	public void bookTickets(Set<Ticket> tickets) {		
+	@Transactional
+	public void bookTickets(Set<Ticket> tickets) {
 		for (Ticket ticket : tickets) {
 			Long eventId = ticket.getEvent().getId();
 			Event event = eventService.getById(eventId);
@@ -70,6 +77,13 @@ public class BookingServiceImpl implements IBookingService {
 			
 			User userOfTicket = ticket.getUser();
 			Long userId = userOfTicket.getId();
+			UserAccount userAccount = userAccountService.getByUserId(userOfTicket.getId());
+			double money = userAccount.getMoney();
+			double price = event.getTicketPrice();
+			if (money < price)
+				throw new NotEnoughMoneyException();
+
+			userAccountService.refill(userOfTicket.getId(), -price);
 			
 			if (userService.getById(userId) != null) {
 				userOfTicket.getTickets().add(ticket);

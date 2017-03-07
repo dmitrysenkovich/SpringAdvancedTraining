@@ -4,7 +4,7 @@
     </head>
     <body>
         <h1>Error page</h1>
-        <h2><${message}</h2>
+        <h2>${message!}</h2>
     </body>
     <#if (_csrf.token)??>
         <form action="/logout" method="post">

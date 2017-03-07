@@ -15,6 +15,7 @@ public class InternalErrorExceptionHandler {
     public ModelAndView internalErrorExceptionHandler(HttpServletRequest request, Exception exception){
         ModelAndView modelAndView = new ModelAndView("internalError");
         modelAndView.addObject("message", exception.getMessage());
+        exception.printStackTrace();
 
         return modelAndView;
     }

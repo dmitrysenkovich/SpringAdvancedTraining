@@ -59,6 +59,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
         return commonsMultipartResolver;
     }
+
     @Bean
     public ObjectMapper objectMapper() {
         return new ObjectMapper();

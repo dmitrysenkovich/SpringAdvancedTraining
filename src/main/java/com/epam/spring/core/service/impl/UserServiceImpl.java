@@ -1,7 +1,9 @@
 package com.epam.spring.core.service.impl;
 
+import com.epam.spring.core.dao.UserAccountRepository;
 import com.epam.spring.core.dao.UserRepository;
 import com.epam.spring.core.domain.User;
+import com.epam.spring.core.domain.UserAccount;
 import com.epam.spring.core.service.IUserService;
 
 import org.apache.commons.collections4.CollectionUtils;
@@ -21,14 +23,23 @@ public class UserServiceImpl implements IUserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private UserAccountRepository userAccountRepository;
+
 	@Override
-	public User save(User object) {
-		return userRepository.save(object);
+	public User save(User user) {
+		if (user.getId() == null) {
+			UserAccount userAccount = new UserAccount();
+			userAccount.setMoney(0.0);
+			user.setUserAccount(userAccount);
+		}
+
+		return userRepository.save(user);
 	}
 
 	@Override
 	public void save(List<User> objects) {
-		userRepository.save(objects);
+		objects.forEach(this::save);
 	}
 
 	@Override

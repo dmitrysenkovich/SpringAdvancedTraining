@@ -10,6 +10,8 @@
                 </br>
                 base price: ${event.basePrice}
                 </br>
+                ticket price: ${event.ticketPrice}
+                </br>
                 rating: ${event.rating}
                 </br>
             </div>

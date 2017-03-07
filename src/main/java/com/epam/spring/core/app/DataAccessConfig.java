@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 @Configuration
@@ -46,27 +47,30 @@ public class DataAccessConfig {
 	}
 	
 	@Bean
-	public JdbcTemplate jdbcTemplate() {
+	public JdbcTemplate jdbcTemplate(@Autowired DataSource dataSource) {
 		JdbcTemplate jdbcTemplate = new JdbcTemplate();
-		jdbcTemplate.setDataSource(dataSource());
+		jdbcTemplate.setDataSource(dataSource);
 	    return jdbcTemplate;
 	}
 	 
 	@Bean
-	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(@Autowired DataSource dataSource) {
 		LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
-		entityManagerFactoryBean.setDataSource(dataSource());
+		entityManagerFactoryBean.setDataSource(dataSource);
 		entityManagerFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
 		entityManagerFactoryBean.setPackagesToScan(env.getRequiredProperty(PROP_ENTITYMANAGER_PACKAGES_TO_SCAN));
 		entityManagerFactoryBean.setJpaProperties(getHibernateProperties());	        
 		return entityManagerFactoryBean;
 	 }
-	  
+
 	@Bean
-	public JpaTransactionManager transactionManager() {
-		JpaTransactionManager transactionManager = new JpaTransactionManager();
-		transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-		return transactionManager;
+	public JpaTransactionManager transactionManager(@Autowired DataSource dataSource,
+													@Autowired EntityManagerFactory entityManagerFactory) {
+		JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
+		jpaTransactionManager.setEntityManagerFactory(entityManagerFactory);
+		jpaTransactionManager.setDataSource(dataSource);
+
+		return jpaTransactionManager;
 	}
 	
 	private Properties getHibernateProperties() {
