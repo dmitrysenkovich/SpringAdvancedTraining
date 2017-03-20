@@ -23,6 +23,10 @@ public interface IEventService extends IAbstractDomainObjectService<Event> {
 
     void save(@Nonnull List<Event> objects);
 
+    boolean exists(@Nonnull Event event);
+
+    void remove(Long id);
+
     /*
      * Finding all events that air on specified date range
      * 

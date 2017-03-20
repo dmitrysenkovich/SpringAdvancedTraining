@@ -105,13 +105,10 @@ public class BookingController {
 
         Event event = eventService.getById(eventId);
         Set<Ticket> tickets = bookingService.getPurchasedTicketsForEvent(event, dateTime);
+        byte[] pdfInBytes = pdfCreator.report(tickets);
 
-        byte[] pdfInBytes = pdfCreator.createPDF(tickets);
         response.setHeader("Content-disposition", "attachment; filename=" + "tickets.pdf");
-        response.setContentLength(pdfInBytes.length);
-
         response.getOutputStream().write(pdfInBytes);
-        response.getOutputStream().flush();
     }
 
     @RequestMapping(value = "/refill", method = RequestMethod.PUT)

@@ -16,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -73,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
             .authorizeRequests()
                 .antMatchers("/login/**").permitAll()
+                .antMatchers("/api/csrf").permitAll()
                 .antMatchers("/api/ticket/event**").access("hasRole('" + Role.BOOKING_MANAGER.toString() + "')")
                 .anyRequest().access("hasRole('" + Role.REGISTERED_USER.toString() + "')")
             .and()
@@ -86,6 +88,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/403")
             .and()
                 .rememberMe()
-                .userDetailsService(splittingRolesUserDetails);
+                .userDetailsService(splittingRolesUserDetails)
+            .and()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
     }
 }

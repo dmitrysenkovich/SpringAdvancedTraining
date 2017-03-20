@@ -11,16 +11,21 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import org.springframework.stereotype.Component;
-
 import java.io.ByteArrayOutputStream;
-import java.util.Set;
+import java.util.Collection;
 
-@Component
 public class PdfCreator {
     private static Font TIME_ROMAN = new Font(Font.FontFamily.TIMES_ROMAN, 18, Font.BOLD);
 
-    public byte[] createPDF(Set<Ticket> tickets) {
+    public byte[] toPdf(Collection<Ticket> tickets) {
+        return generatePdf(tickets, false);
+    }
+
+    public byte[] report(Collection<Ticket> tickets) {
+        return generatePdf(tickets, true);
+    }
+
+    private byte[] generatePdf(Collection<Ticket> tickets, boolean report) {
         byte[] pdfInBytes = null;
 
         try {
@@ -29,8 +34,10 @@ public class PdfCreator {
             PdfWriter.getInstance(document, byteArrayOutputStream);
             document.open();
 
-            addMetaData(document);
-            addTitlePage(document);
+            if (report) {
+                addMetaData(document);
+                addTitlePage(document);
+            }
             createTable(document, tickets);
 
             document.close();
@@ -54,7 +61,7 @@ public class PdfCreator {
         document.add(preface);
     }
 
-    private void createTable(Document document, Set<Ticket> tickets) throws DocumentException {
+    private void createTable(Document document, Collection<Ticket> tickets) throws DocumentException {
         Paragraph paragraph = new Paragraph();
         createEmptyLine(paragraph, 2);
         document.add(paragraph);

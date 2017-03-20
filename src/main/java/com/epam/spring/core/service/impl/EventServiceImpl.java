@@ -36,6 +36,11 @@ public class EventServiceImpl implements IEventService {
 		eventRepository.delete(object);		
 	}
 
+    @Override
+    public void remove(Long id) {
+        eventRepository.delete(id);
+    }
+
 	@Override
 	public Event getById(Long id) {
 		return eventRepository.findOne(id);
@@ -53,4 +58,9 @@ public class EventServiceImpl implements IEventService {
 	public Event getByName(String name) {
 		return eventRepository.findByName(name);
 	}
+
+    @Override
+    public boolean exists(Event object) {
+        return eventRepository.findByName(object.getName()) != null;
+    }
 }

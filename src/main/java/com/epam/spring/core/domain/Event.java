@@ -12,6 +12,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.MapKey;
@@ -43,7 +44,7 @@ public class Event extends DomainObject {
 	@Enumerated(EnumType.STRING)
     private EventRating rating;
 	
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	@JoinTable(
 			name = "local_time_auditorium", 
 			joinColumns = @JoinColumn(name = "event_id"), 
@@ -52,7 +53,7 @@ public class Event extends DomainObject {
 	@MapKeyTemporal(TemporalType.TIMESTAMP)
 	private Map<Date, Auditorium> auditoriums = new HashMap<>();
     
-	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private Set<Ticket> tickets = new HashSet<>();
 
 	public void assignAuditorium(Date dateTime, Auditorium auditorium) {

@@ -1,7 +1,11 @@
 package com.epam.spring.core.web;
 
 import com.epam.spring.core.web.converter.DateTimeConverter;
+import com.epam.spring.core.web.converter.TicketCollectionToPdfConverter;
+import com.epam.spring.core.web.converter.TicketToPdfConverter;
+import com.epam.spring.core.web.pdf.PdfCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -62,7 +66,25 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean
     public ObjectMapper objectMapper() {
-        return new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new Hibernate4Module());
+
+        return objectMapper;
+    }
+
+    @Bean
+    public PdfCreator pdfCreator() {
+        return new PdfCreator();
+    }
+
+    @Bean
+    public TicketToPdfConverter ticketToPdfConverter() {
+        return new TicketToPdfConverter(pdfCreator());
+    }
+
+    @Bean
+    public TicketCollectionToPdfConverter ticketCollectionToPdfConverter() {
+        return new TicketCollectionToPdfConverter(pdfCreator());
     }
 
     @Override
@@ -70,6 +92,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
         builder.indentOutput(true).dateFormat(new SimpleDateFormat(DATE_FORMAT));
         converters.add(new MappingJackson2HttpMessageConverter(builder.build()));
+        converters.add(ticketToPdfConverter());
+        converters.add(ticketCollectionToPdfConverter());
     }
 
     @Override

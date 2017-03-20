@@ -49,12 +49,17 @@ public class UserServiceImpl implements IUserService {
 
 	@Override
 	public User getById(Long id) {
-		return userRepository.findOne(id);
+		User user = userRepository.findOne(id);
+		if (user != null) {
+			user.setUserAccount(null);
+		}
+
+		return user;
 	}
 
 	@Override
 	public Collection<User> getAll() {
-		List<User> targetCollection = new ArrayList<User>();
+		List<User> targetCollection = new ArrayList<>();
 		Iterable<User> eventIterator = userRepository.findAll();
 		CollectionUtils.addAll(targetCollection, eventIterator.iterator());
 		return targetCollection;
@@ -68,6 +73,11 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public User getUserByUserName(String userName) {
 		return userRepository.findByUserName(userName);
+	}
+
+	@Override
+	public boolean exists(User object) {
+		return userRepository.findByUserNameOrEmail(object.getUserName(), object.getEmail()) != null;
 	}
 	
 }
